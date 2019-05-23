@@ -1,2 +1,2 @@
-from mkgDjangoProject.api.baseAPI import BaseApi
+from api.baseAPI import BaseApi
 

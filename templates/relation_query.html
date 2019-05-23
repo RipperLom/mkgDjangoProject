@@ -1,323 +1,591 @@
-{% extends "base.html" %} {% block mainbody %}
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-    <meta charset="utf-8" />
-    <script src="/static/js/echarts.common.min.js"></script>   
-    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
-</head>
-<title>关系</title>
-<div class="container">
+{% extends "base.html" %}
+{% block mainbody %}
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title></title>
+        <meta charset="utf-8"/>
+        <script src="/static/js/echarts.min.js"></script>
+    </head>
+    <title>关系</title>
+    <div class="container"></div>
     <div class="row">
-    <!--head start-->
-    <div class="col-md-12">
-        <h3 class="page-header"><i class="fa fa-link" aria-hidden="true"></i> 关系查询 </h3>
+        <!--head start-->
+        <div class="col-md-12">
+            <h3 class="page-header"><i class="fa fa-link" aria-hidden="true"></i> 关系查询 </h3>
             <ol class="breadcrumb">
                 <li><i class="fa fa-home"></i><a href="\">Home</a></li>
                 <li><i class="fa fa-link" aria-hidden="true"></i>关系查询</li>
             </ol>
-    </div>
-    
-    <div class = "col-md-12">
-    	<div class = "panel panel-default">
-			<header class="panel-heading">
-            查询条件：
-       		</header>
-       		<div class = "panel-body">
+        </div>
 
-			    <form  id ="searchRelationForm" class="form-inline" style="padding-left: 10% ; padding-right: 10%" method="get">
-			    	<div id = "entity1" class="form-group" style="padding: 2%">
-			        	<input type="text" id = "entity1_text" name = "entity1_text" class ="form-control" placeholder="实体１" aria-describedby="basic-addon1">
-			 		</div>
-			 		<!--dropdown combobox start-->
-			        <div class="btn-group" style="padding: 2%" > <a class="btn btn-default dropdown-toggle btn-select form-control" data-toggle="dropdown" id="btnCountry">Select a Relation <span class="caret"></span></a>
-			            <ul class="dropdown-menu">
-			                <li><a href="#">Instance of</a></li>
-			                <li><a href="#">Country</a></li>
-			                <li><a href="#">Taxon rank</a></li>
-			                <li><a href="#">Subclass of</a></li>
-			                <li><a href="#">Has part</a></li>
-			                <li><a href="#">Parent Taxon</a></li>
-			                <li><a href="#">Sex or gender</a></li>
-			                <li><a href="#">Part of</a></li>
-			                <li><a href="#">Different from</a></li>
-			                <li><a href="#">Found in taxon</a></li>
-			                <li class="divider"></li>
-			                <li><a href="#"><span class="glyphicon glyphicon-star"></span>Other</a></li>
-			            </ul>
-			        </div>
-			        <!--dropdown combobox end-->
-			        <div id = "relation_name" class = "form-group hide" style="padding: 2%">
-			        	 <input type="text" id = "relation_name_input" name = "relation_name_text" class ="form-control" placeholder="输入关系名称" aria-describedby="basic-addon1">
-			        </div>
-			        <div id = "entity2" class = "form-group" style="padding: 2%">
-			        	 <input type="text" id = "entity2_text" name = "entity2_text" class ="form-control" placeholder="实体２" aria-describedby="basic-addon1">
-			        </div>
-			        <div class="btn-group" style="padding: 2%">
-			            <button type="button" id="btnSearch" class="btn btn-primary" onclick = "document.getElementById('searchRelationForm').submit();">Search</button>
-			        </div>
-				</form>
-			</div>
-		</div>
-	</div>
-	{% if ctx %}
-	<div class = "col-md-12">
-		<div class = "panel panel-default">
-			<header class = "panel-heading">
-				查询结果：
-			</header>
-			<div class = "panel-body">
-				<div style="padding: 2%">
-					<h2>暂未找到相应的匹配</h2>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% endif %}
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <header class="panel-heading">
+                    查询条件：
+                </header>
+                <div class="panel-body">
 
-    {% if searchResult %}
-
-    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div class = "col-md-12">
-        <div class="panel panel-default ">
-	        <header class="panel-heading">
-	            关系图 :
-	        </header>
-            <div class = "panel-body ">
-                <div id="graph" style="width: 100%;height:600px;"></div>
+                    <form id="searchRelationForm" class="form-inline" style="padding-left: 10% ; padding-right: 10%"
+                          method="get">
+                        <div id="entity1" class="form-group" style="padding: 2%">
+                            <input type="text" id="entity1_text" name="entity1_text" class="form-control"
+                                   placeholder="实体１" aria-describedby="basic-addon1">
+                        </div>
+                        <!--dropdown combobox start-->
+                        <div class="btn-group" style="padding: 2%"><a
+                                class="btn btn-default dropdown-toggle btn-select form-control" data-toggle="dropdown"
+                                id="btnCountry">Select a Relation <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                {% for rel in relas %}
+                                    <li><a href="#">{{ rel.name }}</a></li>
+                                {% endfor %}
+                                <li class="divider"></li>
+                                <li><a href="#"><span class="glyphicon glyphicon-star"></span>Other</a></li>
+                            </ul>
+                        </div>
+                        <!--dropdown combobox end-->
+                        <div id="relation_name" class="form-group hide" style="padding: 2%">
+                            <input type="text" id="relation_name_input" name="relation_name_text" class="form-control"
+                                   placeholder="输入关系名称" aria-describedby="basic-addon1">
+                        </div>
+                        <div id="entity2" class="form-group" style="padding: 2%">
+                            <input type="text" id="entity2_text" name="entity2_text" class="form-control"
+                                   placeholder="实体２" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="btn-group" style="padding: 2%">
+                            <button type="button" id="btnSearch" class="btn btn-primary"
+                                    onclick="document.getElementById('searchRelationForm').submit();">Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+        {% ifequal isexist False %}
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <header class="panel-heading">
+                        查询结果：
+                    </header>
+                    <div class="panel-body">
+                        <div style="padding: 2%">
+                            <h2>暂未找到相应的匹配</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endifequal %}
+
+        {% if isexist %}
+
+            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+            <div class="col-md-12">
+                <div class="panel panel-default ">
+                    <header class="panel-heading">
+                        关系图 :
+                    </header>
+                    <div class="panel-body ">
+                        <div id="graph" style="width: 100%;height:600px;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footable -->
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <header class="panel-heading">
+                        关系列表 :
+                    </header>
+                    <div class="panel-body">
+                        <table class="table" data-paging="true" data-sorting="true"></table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
     </div>
-    <!-- Footable -->
-    <div class = "col-md-12">
-	    <div class="panel panel-default">
-	    	<header class="panel-heading">
-	       	 关系列表 :
-	   		</header>
-	        <div class = "panel-body">
-	            <table class = "table" data-paging =  "true" data-sorting="true"></table>
-	        </div>
-	    </div>
-	</div>
+    <script src="/static/js/jquery-1.8.3.min.js"></script>
+    {% if isexist %}
+        var myChart = echarts.init(document.getElementById('main'));
+        <script type="text/javascript">
+            <script type="text/javascript">
+            var searchResult = {{searchResult|safe}}
+                //用表格列出所有的关系
+                tableData = []
+            for (var i = 0; i < searchResult.length; i++) {
+                relationData = {};
+                relationData['entity1'] = searchResult[i]['n1']['title'];
+                relationData['relation'] = searchResult[i]['rel']['type'];
+                relationData['entity2'] = searchResult[i]['n2']['title'];
+                tableData.push(relationData);
+            }
+            jQuery(function () {
+                $('.table').footable({
+                    "columns": [{"name": "entity1", title: "Entity1"},
+                        {"name": "relation", title: "Relation"},
+                        {"name": "entity2", title: "Entity2"}],
+                    "rows": tableData
+                });
+            });
+
+            //echarts 数据
+            var data = [];
+            var links = [];
+
+            //构造展示的数据
+            var maxDisPlayNode = 15;
+            var id = 0;
+            for (var i = 0; id < maxDisPlayNode && i < searchResult.length; i++) {
+                //获取node1
+                node1 = {};
+                node1['name'] = searchResult[i]['n1']['title'];
+                node1['draggable'] = true;
+                if ('url' in searchResult[i]['n1']) {
+                    node1['category'] = 1;
+                }
+                else {
+                    node1['category'] = 2;
+                }
+                var flag = 1;
+
+                relationTarget = id.toString();
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j]['name'] === node1['name']) {
+                        flag = 0;
+                        relationTarget = data[j]['id'];
+                        break;
+                    }
+                }
+
+                node1['id'] = relationTarget;
+                if (flag === 1) {
+                    id++;
+                    data.push(node1);
+                }
+
+                //获取node2
+                node2 = {};
+                node2['name'] = searchResult[i]['n2']['title'];
+                node2['draggable'] = true;
+                if ('url' in searchResult[i]['n2']) {
+                    node2['category'] = 1;
+                }
+                else {
+                    node2['category'] = 2;
+                }
+                flag = 1;
+                relationTarget = id.toString();
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j]['name'] === node2['name']) {
+                        flag = 0;
+                        relationTarget = data[j]['id'];
+                        break;
+                    }
+                }
+                node2['id'] = relationTarget;
+                if (flag === 1) {
+                    id++;
+                    data.push(node2);
+                }
+                //获取relation
+                relation = {}
+                relation['source'] = node1['id'];
+                relation['target'] = node2['id'];
+                relation['category'] = 0;
+                flag = 1;
+                for (var j = 0; j < links.length; j++) {
+                    if (links[j]['source'] == relation['source'] && links[j]['target'] == relation['target']) {
+                        links[j]['value'] = links[j]['value'] + searchResult[i]['rel']['type'];
+                        flag = 0;
+                        break;
+                    }
+                }
+                if (flag === 1) {
+                    relation['value'] = searchResult[i]['rel']['type'];
+                    relation['symbolSize'] = 10;
+                    links.push(relation);
+                }
+
+            }
+
+
+            // 基于准备好的dom，初始化echarts实例
+
+        </script>
+        option = {
+                title: {text: '人民的名义关系图谱'},
+                tooltip: {
+                    formatter: function (x) {
+                        return x.data.des;
+                    }
+                },
+                series: [
+                    {
+                        type: 'graph',
+                        layout: 'force',
+                        symbolSize: 30,
+                        roam: true,
+                        edgeSymbol: ['circle', 'arrow'],
+                        edgeSymbolSize: [4, 10],
+                        edgeLabel: {
+                            normal: {
+                                textStyle: {
+                                    fontSize: 20
+                                }
+                            }
+                        },
+                        force: {
+                            repulsion: 2500,
+                            edgeLength: [10, 50]
+                        },
+                        draggable: true,
+                        itemStyle: {
+                            normal: {
+                                color: '#4b565b'
+                            }
+                        },
+                        lineStyle: {
+                            normal: {
+                                width: 2,
+                                color: '#4b565b'
+
+                            }
+                        },
+                        edgeLabel: {
+                            normal: {
+                                show: true,
+                                formatter: function (x) {
+                                    return x.data.name;
+                                }
+                            }
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                textStyle: {}
+                            }
+                        },
+                        data: [
+                            {
+                                name: '侯亮平',
+                                des: '最高检反贪局侦查处处长，汉东省人民检察院副检察长兼反贪局局长。<br/>经过与腐败违法分子的斗争，最终将一批腐败分子送上了审判台，<br/>正义战胜邪恶，自己也迎来了成长。',
+                                symbolSize: 100,
+                                itemStyle: {
+                                    normal: {
+                                        color: '#c23531'
+                                    }
+                                }
+                            }, {
+                                name: '李达康',
+                                des: '汉东省省委常委，京州市市委书记。是一个正义无私的好官。<br/>但为人过于爱惜自己的羽毛，对待身边的亲人和朋友显得有些无情。',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '祁同伟',
+                                des: '汉东省公安厅厅长',
+                                symbolSize: 100
+                            }, {
+                                name: '陈岩石',
+                                des: '离休干部、汉东省检察院前常务副检察长。充满正义，平凡而普通的共 产 党人。<br/>对大老虎赵立春，以各种形式执着举报了十二年。<br/>在这场关系党和国家生死存亡的斗争中，老人家以耄耋高龄，<br/>义无反顾地背起了炸 药包，在反腐胜利前夕因病去世。',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '陆亦可',
+                                des: '汉东省检察院反贪局一处处长',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '高育良',
+                                des: '汉东省省委副书记兼政法委书记。年近六十，是一个擅长太极功夫的官场老手。侯亮平、陈海和祁同伟是其学生。',
+                                symbolSize: 60
+                            }, {
+                                name: '沙瑞金',
+                                des: '汉东省省委书记',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '高小琴',
+                                des: '山水集团董事长，是一位叱咤于政界和商界的风云人物，处事圆滑、精明干练。'
+                            }, {
+                                name: '高小凤'
+                            }, {
+                                name: '赵东来',
+                                des: '汉东省京州市公安局局长，充满正义，整治恶势力，<br/>在与检察部门的合作中从最初的质疑到之后的通力配合。',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '程度',
+                                des: '汉东省京州市公安局光明区分局局长，因犯错误，被李达康书记和赵东来局长点名要清除公安队伍。<br/>但在高小琴的帮助下，祁同伟调他当上了省公安厅办公室副主任。<br/>尽管程度逃避了所有罪责，上面也有人保他，<br/>但最终还是在反贪局局长侯亮平的缜密侦查下被绳之于法。',
+                            }, {
+                                name: '吴惠芬',
+                                des: '汉东省省委副书记高育良的妻子，汉东大学明史教授。',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '赵瑞龙',
+                                des: '副国级人物赵立春的公子哥，官二代，打着老子的旗子，<br/>黑白两道通吃，可谓呼风唤雨，权倾一时。',
+                            }, {
+                                name: '赵立春',
+                                des: '副国级领导人，曾经的改革闯将，在权利面前，显得极其渺小。',
+                            }, {
+                                name: '陈海',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '梁璐',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '刘新建'
+                            }, {
+                                name: '欧阳菁'
+                            }, {
+                                name: '吴心怡',
+                                itemStyle: {
+                                    normal: {
+                                        color: 'red'
+                                    }
+                                }
+                            }, {
+                                name: '蔡成功'
+                            }, {
+                                name: '丁义珍'
+                            }
+                        ],
+                        links: [
+                            {
+                                source: '高育良',
+                                target: '侯亮平',
+                                name: '师生',
+                                des: '侯亮平是高育良的得意门生'
+                            }, {
+                                source: '高育良',
+                                target: '祁同伟',
+                                name: '师生'
+                            }, {
+                                source: '赵立春',
+                                target: '高育良',
+                                name: "前领导"
+                            }, {
+                                source: '赵立春',
+                                target: '赵瑞龙',
+                                name: "父子"
+                            }, {
+                                source: '赵立春',
+                                target: '刘新建',
+                                name: "前部队下属"
+                            }, {
+                                source: '李达康',
+                                target: '赵立春',
+                                name: "前任秘书"
+                            }, {
+                                source: '祁同伟',
+                                target: '高小琴',
+                                name: "情人"
+                            }, {
+                                source: '陈岩石',
+                                target: '陈海',
+                                name: "父子"
+                            }, {
+                                source: '陆亦可',
+                                target: '陈海',
+                                name: "属下"
+                            }, {
+                                source: '沙瑞金',
+                                target: '陈岩石',
+                                name: "故人"
+                            }, {
+                                source: '祁同伟',
+                                target: '陈海',
+                                name: "师哥"
+                            }, {
+                                source: '祁同伟',
+                                target: '侯亮平',
+                                name: "师哥"
+                            }, {
+                                source: '侯亮平',
+                                target: '陈海',
+                                name: "同学，生死朋友"
+                            }, {
+                                source: '高育良',
+                                target: '吴惠芬',
+                                name: "夫妻"
+                            }, {
+                                source: '陈海',
+                                target: '赵东来',
+                                name: "朋友"
+                            }, {
+                                source: '高小琴',
+                                target: '高小凤',
+                                name: "双胞胎",
+                                symbolSize: '1'
+                            }, {
+                                source: '赵东来',
+                                target: '陆亦可',
+                                name: "爱慕"
+                            }, {
+                                source: '祁同伟',
+                                target: '程度',
+                                name: "领导"
+                            }, {
+                                source: '高育良',
+                                target: '高小凤',
+                                name: "情人"
+                            }, {
+                                source: '赵瑞龙',
+                                target: '祁同伟',
+                                name: "勾结",
+                                symbolSize: '1',
+                            }, {
+                                source: '李达康',
+                                target: '赵东来',
+                                name: "领导"
+                            }, {
+                                source: '赵瑞龙',
+                                target: '程度',
+                                name: "领导"
+                            }, {
+                                source: '沙瑞金',
+                                target: '李达康',
+                                name: "领导"
+                            }, {
+                                source: '沙瑞金',
+                                target: '高育良',
+                                name: "领导"
+                            }, {
+                                source: '祁同伟',
+                                target: '梁璐',
+                                name: "夫妻"
+                            }, {
+                                source: '吴惠芬',
+                                target: '梁璐',
+                                name: "朋友"
+                            }, {
+                                source: '李达康',
+                                target: '欧阳菁',
+                                name: "夫妻"
+                            }, {
+                                source: '赵瑞龙',
+                                target: '刘新建',
+                                name: "洗钱工具"
+                            }, {
+                                source: '赵瑞龙',
+                                target: '高小琴',
+                                name: "勾结，腐化",
+                                symbolSize: '1'
+                            }, {
+                                source: '赵瑞龙',
+                                target: '高小凤',
+                                name: "腐化"
+                            }, {
+                                source: '吴心怡',
+                                target: '陆亦可',
+                                name: "母女"
+                            }, {
+                                source: '吴心怡',
+                                target: '吴惠芬',
+                                name: "姐妹"
+                            }, {
+                                source: '蔡成功',
+                                target: '侯亮平',
+                                name: "发小"
+                            }, {
+                                source: '蔡成功',
+                                target: '欧阳菁',
+                                name: "举报",
+                                lineStyle: {
+                                    normal: {
+                                        type: 'dotted',
+                                        color: '#000'
+                                    }
+                                }
+                            }, {
+                                source: '欧阳菁',
+                                target: '刘新建',
+                                name: "举报",
+                                lineStyle: {
+                                    normal: {
+                                        type: 'dotted',
+                                        color: '#000'
+                                    }
+                                }
+                            }, {
+                                source: '刘新建',
+                                target: '赵瑞龙',
+                                name: "举报",
+                                lineStyle: {
+                                    normal: {
+                                        type: 'dotted',
+                                        color: '#000'
+                                    }
+                                }
+                            }, {
+                                source: '李达康',
+                                target: '丁义珍',
+                                name: "领导"
+                            }, {
+                                source: '高小琴',
+                                target: '丁义珍',
+                                name: "策划出逃"
+                            }, {
+                                source: '祁同伟',
+                                target: '丁义珍',
+                                name: "勾结"
+                            }, {
+                                source: '赵瑞龙',
+                                target: '丁义珍',
+                                name: "勾结"
+                            }]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        </script>
     {% endif %}
+    <script>
 
-</div>
-<script src="/static/js/jquery-1.8.3.min.js"></script>
-{% if searchResult %}
-<script type="text/javascript">
-	var searchResult = {{searchResult|safe}}
-	//用表格列出所有的关系
-    tableData = []
-    for (var i = 0 ; i < searchResult.length ; i++){
-        relationData = {} ;
-        relationData['entity1'] = searchResult[i]['n1']['title'];
-        relationData['relation'] = searchResult[i]['rel']['type'] ;
-        relationData['entity2'] = searchResult[i]['n2']['title'] ;
-        tableData.push(relationData) ;
-    }
-    jQuery(function(){
-        $('.table').footable({
-        "columns": [{"name":"entity1",title:"Entity1"} ,
-                  {"name":"relation",title:"Relation"},
-                  {"name":"entity2",title:"Entity2"}],
-        "rows": tableData
+        $(".dropdown-menu li a").click(function () {
+            var selText = $(this).text();
+            $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+            if (selText.trim() != "Other") {
+                $("#relation_name_input").val(selText.trim());
+            }
+            //combobox behavior
+            if (selText.trim() === "Other") {
+                $("#relation_name").removeClass("hide");
+            }
+            else {
+                $("#relation_name").addClass("hide");
+            }
+
         });
-    });
-
-    //echarts 数据
-    var data = [] ;
-    var links = [] ;	
-
-    //构造展示的数据
-    var maxDisPlayNode = 15 ;
-    var id = 0 ;
-    for( var i = 0 ;id < maxDisPlayNode&& i<searchResult.length ; i++ ){
-        //获取node1
-        node1 = {} ;
-        node1['name'] = searchResult[i]['n1']['title'] ;
-        node1['draggable'] = true ;
-        if('url' in searchResult[i]['n1']){
-            node1['category'] = 1 ;
-        }
-        else{
-            node1['category'] = 2 ;
-        }
-        var flag = 1 ;
-
-        relationTarget = id.toString() ;
-        for(var j = 0 ; j<data.length ;j++){
-        	if(data[j]['name'] === node1['name']){
-        		flag = 0 ;
-        		relationTarget = data[j]['id'] ;
-        		break ;
-        	}
-        }
-
-        node1['id'] = relationTarget ; 
-        if(flag === 1){
-        	id++ ;
-        	data.push(node1) ;
-        }
-
-        //获取node2
-        node2 = {} ;
-        node2['name'] = searchResult[i]['n2']['title'] ;
-        node2['draggable'] = true ;
-        if('url' in searchResult[i]['n2']){
-            node2['category'] = 1 ;
-        }
-        else{
-            node2['category'] = 2 ;
-        }
-        flag = 1 ;
-        relationTarget = id.toString() ;
-        for(var j = 0 ; j<data.length ;j++){
-        	if(data[j]['name'] === node2['name']){
-        		flag = 0 ;
-        		relationTarget = data[j]['id'] ;
-        		break ;
-        	}
-        }
-        node2['id'] = relationTarget ; 
-        if(flag === 1){
-        	id++ ;
-        	data.push(node2) ;
-        }
-        //获取relation
-        relation = {}
-        relation['source'] = node1['id'];
-        relation['target'] = node2['id'] ;
-        relation['category'] = 0 ;
-        flag = 1;  
-        for(var j = 0 ;j<links.length;j++){
-        	if(links[j]['source'] == relation['source'] && links[j]['target'] == relation['target']){
-        		links[j]['value'] = links[j]['value'] + searchResult[i]['rel']['type'] ;
-        		flag = 0 ;
-        		break ;
-        	}
-        }           
-        if(flag === 1){
-        	relation['value'] = searchResult[i]['rel']['type'] ;
-        	relation['symbolSize'] = 10;
-        	links.push(relation) ;
-        }
-
-    }
 
 
-     // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('graph'));
-    
-    option = {
-	    title: {
-	        text: ''
-	    },
-	    tooltip: {},
-	    animationDurationUpdate: 1500,
-	    animationEasingUpdate: 'quinticInOut',
-	    label: {
-	        normal: {
-	            show: true,
-	            textStyle: {
-	                fontSize: 12
-	            },
-	        }
-	    },
-	    legend: {
-	        x: "center",
-	        show: false
-	    },
-	    series: [
-
-	        {
-	            type: 'graph',
-	            layout: 'force',
-	            symbolSize: 45,
-	            focusNodeAdjacency: true,
-	            roam: true,
-	            edgeSymbol: ['none', 'arrow'],
-	            categories: [{
-	                name: '查询实体',
-	                itemStyle: {
-	                    normal: {
-	                        color: "#009800",
-	                    }
-	                }
-	            }, {
-	                name: 'HudongItem',
-	                itemStyle: {
-	                    normal: {
-	                        color: "#4592FF",
-	                    }
-	                }
-	            }, {
-	                name: 'NewNode',
-	                itemStyle: {
-	                    normal: {
-	                        color: "#C71585",
-	                    }
-	                }
-	            }],
-	            label: {
-	                normal: {
-	                    show: true,
-	                    textStyle: {
-	                        fontSize: 12,
-	                    },
-	                }
-	            },
-	            force: {
-	                repulsion: 1000
-	            },
-	            edgeSymbolSize: [4, 50],
-	            edgeLabel: {
-	                normal: {
-	                    show: true,
-	                    textStyle: {
-	                        fontSize: 10
-	                    },
-	                    formatter: "{c}"
-	                }
-	            },
-	            data: data,
-	            links: links,
-	            lineStyle: {
-	                normal: {
-	                    opacity: 0.9,
-	                    width: 1.3,
-	                    curveness: 0,
-	                    color:"#262626",
-	                }
-	            }
-	        }
-	    ]
-	};
-	// 使用刚指定的配置项和数据显示图表。
-	myChart.setOption(option);
-
-</script>
-{% endif %}
-<script>
-
-	$(".dropdown-menu li a").click(function(){
-	   var selText = $(this).text();
-	   $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
-	   if(selText.trim()!="Other"){
-	   	$("#relation_name_input").val(selText.trim()) ;
-	   }
-	   //combobox behavior
-	   if (selText.trim()==="Other") {
-	       $("#relation_name").removeClass("hide");
-	   }
-	   else{
-	   	   $("#relation_name").addClass("hide");
-	   }
-	  
-	});
-
-
-	// $("#btnSearch").click(function(){
-	// 	alert($('.btn-select').text()+", "+$('.btn-select2').text());
-	// });
-</script>
+        // $("#btnSearch").click(function(){
+        // 	alert($('.btn-select').text()+", "+$('.btn-select2').text());
+        // });
+    </script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from mkgDjangoProject.api.baseAPI import BaseApi
+from api.baseAPI import BaseApi
 
 class RelationQueryApi(BaseApi):
     def __init__(self, name=None):

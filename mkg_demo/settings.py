@@ -18,3 +18,10 @@ with open(mkg_configMenu_path, 'r', encoding='utf-8') as fr:
 # 添加api路径，防止找不到
 API_DIR = os.path.join(os.path.dirname(MKGDEMO_BASE_DIR), 'api')
 sys.path.append(API_DIR)
+
+# --读取MKG关系配置
+mkg_configRel_path = os.path.join(MKGDEMO_CONFIG_DIR, 'mkg_relationname.json')
+MKG_REL = []
+with open(mkg_configRel_path, 'r', encoding='utf-8') as fr:
+    MKG_REL = json.load(fr)    # MKG关系内容
+    print('MKG_MENU: ', MKG_REL, '-->type: ', type(MKG_REL))

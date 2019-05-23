@@ -1,623 +1,163 @@
-{% extends "base.html" %} {% block mainbody %}
+{% extends "base.html" %}
+{% block mainbody %}
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-    <meta charset="utf-8" />
-    <script src="/static/js/echarts.min.js"></script>
-{#    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>#}
-</head>
-<title>实体</title>
-<div class="container">
-    <div class="row">
-    <!--head start-->
-    <div class="col-md-12">
-        <h3 class="page-header"><i class="fa fa-share-alt" aria-hidden="true"></i> 实体查询 </h3>
-            <ol class="breadcrumb">
-                <li><i class="fa fa-home"></i><a href="\">Home</a></li>
-                <li><i class="fa fa-share-alt" aria-hidden="true"></i>实体查询</li>
-            </ol>
-    </div>
-    <div class = "col-md-12">
-        <div class="panel panel-default ">
-            <header class = "panel-heading">
-                查询条件：
-            </header>
-            <div class = "panel-body">
-                <!--搜索框-->
-                <form method = "get" id = 'searchEntityForm'>
-                    <div >
-                        <div class="input-group">
-                            <input type="text" id = "user_text" name = "entity" class="form-control" placeholder="输入实体名称" aria-describedby="basic-addon1">
-                            <span class="btn btn-primary input-group-addon" type="button" id="relationSearchButton" style="background-color:#4592fe ; padding:6px 38px" onclick="document.getElementById('searchEntityForm').submit();">查询</span>
-                         </div>
-                    </div>
-                </form>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title></title>
+        <meta charset="utf-8"/>
+        <script src="/static/js/echarts.min.js"></script>
+    </head>
+    <title>实体</title>
+    <div class="container">
+        <div class="row">
+            <!--head start-->
+            <div class="col-md-12">
+                <h3 class="page-header"><i class="fa fa-share-alt" aria-hidden="true"></i> 实体查询 </h3>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="\">Home</a></li>
+                    <li><i class="fa fa-share-alt" aria-hidden="true"></i>实体查询</li>
+                </ol>
             </div>
-        </div>
-
-        
-    </div>
-    <p>
-        <div class = "col-md-12">
-            {% if ctx %}
-                <div class="panel panel-default">
-                    <header class ="panel-heading">
-                        <div class = "panel-body">
-                            <h2>数据库中暂未添加该实体</h2>
-                        </div>
+            <div class="col-md-12">
+                <div class="panel panel-default ">
+                    <header class="panel-heading">
+                        查询条件：
                     </header>
+                    <div class="panel-body">
+                        <!--搜索框-->
+                        <form method="get" id='searchEntityForm'>
+                            <div>
+                                <div class="input-group">
+                                    <input type="text" id="user_text" name="entity" class="form-control"
+                                           placeholder="输入实体名称" aria-describedby="basic-addon1">
+                                    <span class="btn btn-primary input-group-addon" type="button"
+                                          id="relationSearchButton" style="background-color:#4592fe ; padding:6px 38px"
+                                          onclick="document.getElementById('searchEntityForm').submit();">查询</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+            <p>
+                <div class="col-md-12">
+                    {% ifequal isexist False %}
+                        <div class="panel panel-default">
+                            <header class="panel-heading">
+                                <div class="panel-body">
+                                    <h2>数据库中暂未添加该实体</h2>
+                                </div>
+                            </header>
+                        </div>
+                    {% endifequal %}
+                </div>
+            </p>
+
+        {% if isexist %}
+            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+            <div class="col-md-12">
+                <div class="panel panel-default ">
+                    <header class="panel-heading">
+                        关系图 :
+                    </header>
+                    <div class="panel-body ">
+                        <div id="graph" style="width: 90%;height:600px;"></div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+            {% if isexist %}
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <header class="panel-heading">
+                            关系列表 :
+                        </header>
+                        <div class="panel-body">
+                            <table class="table" data-paging="true" data-sorting="true">
+                                <th>
+                                    <td>实体一</td>
+                                    <td>关系</td>
+                                    <td>实体二</td>
+                                </th>
+                                {% for r in result.relation %}
+                                    <tr>
+                                        <td>{{ r.source }}</td>
+                                        <td>{{ r.relation }}</td>
+                                        <td>{{ r.target }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
                 </div>
             {% endif %}
         </div>
-    </p>
-<!--relation start-->
-{#{% if entityRelation %}#}
-    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div class = "col-md-12">
-        <div class="panel panel-default ">
-            <header class="panel-heading">
-                关系图 :
-            </header>
-            <div class = "panel-body ">
-                <div id="graph" style="width: 90%;height:600px;"></div>
-            </div>
-        </div>
     </div>
-{#{% endif %}#}
-{% if entityRelation %}
-<div class = "col-md-12">
-    <div class="panel panel-default">
-    <header class="panel-heading">
-        关系列表 :
-    </header>
-        <div class = "panel-body">
-            <table class = "table" data-paging =  "true" data-sorting="true"></table>
-        </div>
-    </div>
-</div>
-{% endif %}
-</div>
-</div>
-{% if entityRelation %}
-{#<script src="/static/js/jquery.min.js"></script>#}
-{#<script type="text/javascript">#}
-{#        // 将后端的查询结果使用echarts展示#}
-{#        var ctx = [ {{ ctx|safe }} ] ;#}
-{##}
-{#        //{entity2,rel}#}
-{#        var entityRelation = [ {{ entityRelation|safe }} ] ;#}
-{##}
-{#        var data = [] ;#}
-{#        var links = [] ;#}
-{#        if(ctx.length == 0){#}
-{#            var node = {} ;#}
-{#            var url = decodeURI(location.search) ;#}
-{#            var str = "";#}
-{#            if(url.indexOf("?") != -1){#}
-{#                str = url.split("=")[1]#}
-{#            }#}
-{#            //实体１#}
-{#            node['name'] = str;#}
-{#            //alert(document.getElementById('user_text').value)#}
-{#            node['draggable'] = true ;#}
-{#            var id = 0; #}
-{#            node['id'] = id.toString() ;#}
-{#            data.push(node) ;#}
-{##}
-{#            //获取实体２，存储在data中，如果实体2已经存在于data中，则不push#}
-{#            var maxDisPlayNode = 15 ;#}
-{#            for( var i = 0 ;i < Math.min(maxDisPlayNode,entityRelation[0].length) ; i++ ){#}
-{#                node = {} ;#}
-{#                node['name'] = entityRelation[0][i]['entity2']['title'] ;#}
-{#                node['draggable'] = true ;#}
-{#                if('url' in entityRelation[0][i]['entity2']){#}
-{#                    node['category'] = 1 ;#}
-{#                }#}
-{#                else{#}
-{#                    node['category'] = 2 ;#}
-{#                }#}
-{#                id = i + 1#}
-{#                node['id'] = id.toString();#}
-{#                var flag = 1 ;#}
-{#                relationTarget = id.toString() ;#}
-{#                for(var j = 0 ; j<data.length ;j++){#}
-{#                    if(data[j]['name'] === node['name']){#}
-{#                        flag = 0 ;#}
-{#                        relationTarget = data[j]['id']  ;#}
-{#                        break ;#}
-{#                    }#}
-{#                }#}
-{#                relation = {}#}
-{#                relation['source'] = 0 ;#}
-{#                relation['target'] = relationTarget ;#}
-{#                relation['category'] = 0 ;               #}
-{##}
-{#                if(flag === 1){#}
-{#                    data.push(node) ;#}
-{#                    relation['value'] = entityRelation[0][i]['rel']['type'] ;#}
-{#                    relation['symbolSize'] = 10#}
-{#                    links.push(relation) ;#}
-{#                }#}
-{#                else{#}
-{#                    maxDisPlayNode += 1 ;#}
-{#                    for(var j = 0; j<links.length ;j++){#}
-{#                        if(links[j]['target'] === relationTarget){#}
-{#                            links[j]['value'] = links[j]['value']+" | "+entityRelation[0][i]['rel']['type'] #}
-{#                            break ;#}
-{#                        }#}
-{#                    }#}
-{##}
-{#                }#}
-{##}
-{#            }#}
-{##}
-{#            //用表格列出所有的关系#}
-{#            tableData = []#}
-{#            for (var i = 0 ; i < entityRelation[0].length ; i++){#}
-{#                relationData = {} ;#}
-{#                relationData['entity1'] = str ;#}
-{#                relationData['relation'] = entityRelation[0][i]['rel']['type'] ;#}
-{#                relationData['entity2'] = entityRelation[0][i]['entity2']['title'] ;#}
-{#                tableData.push(relationData) ;#}
-{#            }#}
-{#            jQuery(function(){#}
-{#                $('.table').footable({#}
-{#                "columns": [{"name":"entity1",title:"Entity1"} ,#}
-{#                          {"name":"relation",title:"Relation"},#}
-{#                          {"name":"entity2",title:"Entity2"}],#}
-{#                "rows": tableData#}
-{#                });#}
-{#            });#}
-{##}
-{#        }#}
-{#        // 基于准备好的dom，初始化echarts实例#}
-{#        var myChart = echarts.init(document.getElementById('graph'));#}
-{#        #}
-{#        option = {#}
-{#            title: {#}
-{#                text: ''#}
-{#            },#}
-{#            tooltip: {},#}
-{#            animationDurationUpdate: 1500,#}
-{#            animationEasingUpdate: 'quinticInOut',#}
-{#            label: {#}
-{#                normal: {#}
-{#                    show: true,#}
-{#                    textStyle: {#}
-{#                        fontSize: 12#}
-{#                    },#}
-{#                }#}
-{#            },#}
-{#            legend: {#}
-{#                x: "center",#}
-{#                show: false#}
-{#            },#}
-{#            series: [#}
-{##}
-{#                {#}
-{#                    type: 'graph',#}
-{#                    layout: 'force',#}
-{#                    symbolSize: 45,#}
-{#                    focusNodeAdjacency: true,#}
-{#                    roam: true,#}
-{#                    edgeSymbol: ['none', 'arrow'],#}
-{#                    categories: [{#}
-{#                        name: '查询实体',#}
-{#                        itemStyle: {#}
-{#                            normal: {#}
-{#                                color: "#009800",#}
-{#                            }#}
-{#                        }#}
-{#                    }, {#}
-{#                        name: 'HudongItem',#}
-{#                        itemStyle: {#}
-{#                            normal: {#}
-{#                                color: "#4592FF",#}
-{#                            }#}
-{#                        }#}
-{#                    }, {#}
-{#                        name: 'NewNode',#}
-{#                        itemStyle: {#}
-{#                            normal: {#}
-{#                                color: "#C71585",#}
-{#                            }#}
-{#                        }#}
-{#                    }],#}
-{#                    label: {#}
-{#                        normal: {#}
-{#                            show: true,#}
-{#                            textStyle: {#}
-{#                                fontSize: 12,#}
-{#                            },#}
-{#                        }#}
-{#                    },#}
-{#                    force: {#}
-{#                        repulsion: 1000#}
-{#                    },#}
-{#                    edgeSymbolSize: [4, 50],#}
-{#                    edgeLabel: {#}
-{#                        normal: {#}
-{#                            show: true,#}
-{#                            textStyle: {#}
-{#                                fontSize: 10#}
-{#                            },#}
-{#                            formatter: "{c}"#}
-{#                        }#}
-{#                    },#}
-{#                    data: data,#}
-{#                    links: links,#}
-{#                    lineStyle: {#}
-{#                        normal: {#}
-{#                            opacity: 0.9,#}
-{#                            width: 1.3,#}
-{#                            curveness: 0,#}
-{#                            color:"#262626"#}
-{#                        }#}
-{#                    }#}
-{#                }#}
-{#            ]#}
-{#        };#}
-{##}
-{#// 使用刚指定的配置项和数据显示图表。#}
-{#        myChart.setOption(option);#}
-{#</script>#}
-{% endif %}
-
-<script>
-    var myChart = echarts.init(document.getElementById('graph'));
-    option = {
-        title: { text: '人民的名义关系图谱' },
-        tooltip: {
-            formatter: function (x) {
-                return x.data.des;
-            }
-        },
-        series: [
-            {
-                type: 'graph',
-                layout: 'force',
-                symbolSize: 30,
-                roam: true,
-                edgeSymbol: ['circle', 'arrow'],
-                edgeSymbolSize: [4, 10],
-                edgeLabel: {
-                    normal: {
-                        textStyle: {
-                            fontSize: 20
-                        }
+    {% if isexist %}
+        <script>
+            var myChart = echarts.init(document.getElementById('graph'));
+            option = {
+                title: {text: '医疗实体关系图谱'},
+                tooltip: {
+                    formatter: function (x) {
+                        return x.data.des;
                     }
                 },
-                force: {
-                    repulsion: 2500,
-                    edgeLength: [10, 50]
-                },
-                draggable: true,
-                itemStyle: {
-                    normal: {
-                        color: '#4b565b'
-                    }
-                },
-                lineStyle: {
-                    normal: {
-                        width: 2,
-                        color: '#4b565b'
-
-                    }
-                },
-                edgeLabel: {
-                    normal: {
-                        show: true,
-                        formatter: function (x) {
-                            return x.data.name;
-                        }
-                    }
-                },
-                label: {
-                    normal: {
-                        show: true,
-                        textStyle: {
-                        }
-                    }
-                },
-                data: [
+                series: [
                     {
-                        name: '侯亮平',
-                        des: '最高检反贪局侦查处处长，汉东省人民检察院副检察长兼反贪局局长。<br/>经过与腐败违法分子的斗争，最终将一批腐败分子送上了审判台，<br/>正义战胜邪恶，自己也迎来了成长。',
-                        symbolSize: 100,
+                        type: 'graph',
+                        layout: 'force',
+                        symbolSize: 30,
+                        roam: true,
+                        edgeSymbol: ['circle', 'arrow'],
+                        edgeSymbolSize: [4, 10],
+                        edgeLabel: {
+                            normal: {
+                                textStyle: {
+                                    fontSize: 20
+                                }
+                            }
+                        },
+                        force: {
+                            repulsion: 2500,
+                            edgeLength: [10, 50]
+                        },
+                        draggable: true,
                         itemStyle: {
                             normal: {
-                                color: '#c23531'
+                                color: '#4b565b'
                             }
-                        }
-                    }, {
-                        name: '李达康',
-                        des: '汉东省省委常委，京州市市委书记。是一个正义无私的好官。<br/>但为人过于爱惜自己的羽毛，对待身边的亲人和朋友显得有些无情。',
-                        itemStyle: {
+                        },
+                        lineStyle: {
                             normal: {
-                                color: 'red'
+                                width: 2,
+                                color: '#4b565b'
+
                             }
-                        }
-                    }, {
-                        name: '祁同伟',
-                        des: '汉东省公安厅厅长',
-                        symbolSize: 100
-                    }, {
-                        name: '陈岩石',
-                        des: '离休干部、汉东省检察院前常务副检察长。充满正义，平凡而普通的共 产 党人。<br/>对大老虎赵立春，以各种形式执着举报了十二年。<br/>在这场关系党和国家生死存亡的斗争中，老人家以耄耋高龄，<br/>义无反顾地背起了炸 药包，在反腐胜利前夕因病去世。',
-                        itemStyle: {
+                        },
+                        edgeLabel: {
                             normal: {
-                                color: 'red'
+                                show: true,
+                                formatter: function (x) {
+                                    return x.data.name;
+                                }
                             }
-                        }
-                    }, {
-                        name: '陆亦可',
-                        des: '汉东省检察院反贪局一处处长',
-                        itemStyle: {
+                        },
+                        label: {
                             normal: {
-                                color: 'red'
+                                show: true,
+                                textStyle: {}
                             }
-                        }
-                    }, {
-                        name: '高育良',
-                        des: '汉东省省委副书记兼政法委书记。年近六十，是一个擅长太极功夫的官场老手。侯亮平、陈海和祁同伟是其学生。',
-                        symbolSize: 60
-                    }, {
-                        name: '沙瑞金',
-                        des: '汉东省省委书记',
-                        itemStyle: {
-                            normal: {
-                                color: 'red'
-                            }
-                        }
-                    }, {
-                        name: '高小琴',
-                        des: '山水集团董事长，是一位叱咤于政界和商界的风云人物，处事圆滑、精明干练。'
-                    }, {
-                        name: '高小凤'
-                    }, {
-                        name: '赵东来',
-                        des: '汉东省京州市公安局局长，充满正义，整治恶势力，<br/>在与检察部门的合作中从最初的质疑到之后的通力配合。',
-                        itemStyle: {
-                            normal: {
-                                color: 'red'
-                            }
-                        }
-                    }, {
-                        name: '程度',
-                        des: '汉东省京州市公安局光明区分局局长，因犯错误，被李达康书记和赵东来局长点名要清除公安队伍。<br/>但在高小琴的帮助下，祁同伟调他当上了省公安厅办公室副主任。<br/>尽管程度逃避了所有罪责，上面也有人保他，<br/>但最终还是在反贪局局长侯亮平的缜密侦查下被绳之于法。',
-                    }, {
-                        name: '吴惠芬',
-                        des: '汉东省省委副书记高育良的妻子，汉东大学明史教授。',
-                        itemStyle: {
-                            normal: {
-                                color: 'red'
-                            }
-                        }
-                    }, {
-                        name: '赵瑞龙',
-                        des: '副国级人物赵立春的公子哥，官二代，打着老子的旗子，<br/>黑白两道通吃，可谓呼风唤雨，权倾一时。',
-                    }, {
-                        name: '赵立春',
-                        des: '副国级领导人，曾经的改革闯将，在权利面前，显得极其渺小。',
-                    }, {
-                        name: '陈海',
-                        itemStyle: {
-                            normal: {
-                                color: 'red'
-                            }
-                        }
-                    }, {
-                        name: '梁璐',
-                        itemStyle: {
-                            normal: {
-                                color: 'red'
-                            }
-                        }
-                    }, {
-                        name: '刘新建'
-                    }, {
-                        name: '欧阳菁'
-                    }, {
-                        name: '吴心怡',
-                        itemStyle: {
-                            normal: {
-                                color: 'red'
-                            }
-                        }
-                    }, {
-                        name: '蔡成功'
-                    }, {
-                        name: '丁义珍'
+                        },
+                        data: {{ result.entity }},
+                        links: {{ result.relation }}
                     }
-                ],
-                links: [
-                    {
-                        source: '高育良',
-                        target: '侯亮平',
-                        name: '师生',
-                        des: '侯亮平是高育良的得意门生'
-                    }, {
-                        source: '高育良',
-                        target: '祁同伟',
-                        name: '师生'
-                    }, {
-                        source: '赵立春',
-                        target: '高育良',
-                        name: "前领导"
-                    }, {
-                        source: '赵立春',
-                        target: '赵瑞龙',
-                        name: "父子"
-                    }, {
-                        source: '赵立春',
-                        target: '刘新建',
-                        name: "前部队下属"
-                    }, {
-                        source: '李达康',
-                        target: '赵立春',
-                        name: "前任秘书"
-                    }, {
-                        source: '祁同伟',
-                        target: '高小琴',
-                        name: "情人"
-                    }, {
-                        source: '陈岩石',
-                        target: '陈海',
-                        name: "父子"
-                    }, {
-                        source: '陆亦可',
-                        target: '陈海',
-                        name: "属下"
-                    }, {
-                        source: '沙瑞金',
-                        target: '陈岩石',
-                        name: "故人"
-                    }, {
-                        source: '祁同伟',
-                        target: '陈海',
-                        name: "师哥"
-                    }, {
-                        source: '祁同伟',
-                        target: '侯亮平',
-                        name: "师哥"
-                    }, {
-                        source: '侯亮平',
-                        target: '陈海',
-                        name: "同学，生死朋友"
-                    }, {
-                        source: '高育良',
-                        target: '吴惠芬',
-                        name: "夫妻"
-                    }, {
-                        source: '陈海',
-                        target: '赵东来',
-                        name: "朋友"
-                    }, {
-                        source: '高小琴',
-                        target: '高小凤',
-                        name: "双胞胎",
-                        symbolSize: '1'
-                    }, {
-                        source: '赵东来',
-                        target: '陆亦可',
-                        name: "爱慕"
-                    }, {
-                        source: '祁同伟',
-                        target: '程度',
-                        name: "领导"
-                    }, {
-                        source: '高育良',
-                        target: '高小凤',
-                        name: "情人"
-                    }, {
-                        source: '赵瑞龙',
-                        target: '祁同伟',
-                        name: "勾结",
-                        symbolSize: '1',
-                    }, {
-                        source: '李达康',
-                        target: '赵东来',
-                        name: "领导"
-                    }, {
-                        source: '赵瑞龙',
-                        target: '程度',
-                        name: "领导"
-                    }, {
-                        source: '沙瑞金',
-                        target: '李达康',
-                        name: "领导"
-                    }, {
-                        source: '沙瑞金',
-                        target: '高育良',
-                        name: "领导"
-                    }, {
-                        source: '祁同伟',
-                        target: '梁璐',
-                        name: "夫妻"
-                    }, {
-                        source: '吴惠芬',
-                        target: '梁璐',
-                        name: "朋友"
-                    }, {
-                        source: '李达康',
-                        target: '欧阳菁',
-                        name: "夫妻"
-                    }, {
-                        source: '赵瑞龙',
-                        target: '刘新建',
-                        name: "洗钱工具"
-                    }, {
-                        source: '赵瑞龙',
-                        target: '高小琴',
-                        name: "勾结，腐化",
-                        symbolSize: '1'
-                    }, {
-                        source: '赵瑞龙',
-                        target: '高小凤',
-                        name: "腐化"
-                    }, {
-                        source: '吴心怡',
-                        target: '陆亦可',
-                        name: "母女"
-                    }, {
-                        source: '吴心怡',
-                        target: '吴惠芬',
-                        name: "姐妹"
-                    }, {
-                        source: '蔡成功',
-                        target: '侯亮平',
-                        name: "发小"
-                    }, {
-                        source: '蔡成功',
-                        target: '欧阳菁',
-                        name: "举报",
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                color: '#000'
-                            }
-                        }
-                    }, {
-                        source: '欧阳菁',
-                        target: '刘新建',
-                        name: "举报",
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                color: '#000'
-                            }
-                        }
-                    }, {
-                        source: '刘新建',
-                        target: '赵瑞龙',
-                        name: "举报",
-                        lineStyle: {
-                            normal: {
-                                type: 'dotted',
-                                color: '#000'
-                            }
-                        }
-                    }, {
-                        source: '李达康',
-                        target: '丁义珍',
-                        name: "领导"
-                    }, {
-                        source: '高小琴',
-                        target: '丁义珍',
-                        name: "策划出逃"
-                    }, {
-                        source: '祁同伟',
-                        target: '丁义珍',
-                        name: "勾结"
-                    }, {
-                        source: '赵瑞龙',
-                        target: '丁义珍',
-                        name: "勾结"
-                    }]
-            }
-        ]
-    };
-    myChart.setOption(option);
-</script>
+                ]
+            };
+            myChart.setOption(option);
+        </script>
+    {% endif %}
 {% endblock %}
