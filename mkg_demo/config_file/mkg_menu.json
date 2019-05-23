@@ -1,0 +1,7 @@
+[
+  {"name":"实体识别", "url":"/entity_recognition", "class": "icon_house_alt"},
+  {"name":"实体查询", "url":"/entity_query", "class": "icon_genius"},
+  {"name":"关系查询", "url":"/relation_query", "class": "social_googledrive"},
+  {"name":"智能咨询", "url":"/robot_conversion", "class": "icon_chat_alt"},
+  {"name":"医学知识概览", "url":"/mkg_classify", "class": "icon_piechart"}
+]
