@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 
 # 当前目录文件路径
 MKGDEMO_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -14,3 +15,6 @@ with open(mkg_configMenu_path, 'r', encoding='utf-8') as fr:
     MKG_MENU = json.load(fr)    # MKG菜单栏内容
     print('MKG_MENU: ', MKG_MENU, '-->type: ', type(MKG_MENU))
 
+# 添加api路径，防止找不到
+API_DIR = os.path.join(os.path.dirname(MKGDEMO_BASE_DIR), 'api')
+sys.path.append(API_DIR)

@@ -1,5 +1,6 @@
-from mkgDjangoProject.api.baseAPI import BaseApi
+from api.baseAPI import BaseApi
 
+# 实体识别
 class EntityRecognitionApi(BaseApi):
     def __init__(self, name=None):
         self.name = name

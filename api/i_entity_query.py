@@ -1,5 +1,6 @@
-from mkgDjangoProject.api.baseAPI import BaseApi
+from api.baseAPI import BaseApi
 
+# 实体查询
 class EntityQueryApi(BaseApi):
     def __init__(self, name=None):
         self.name = name
