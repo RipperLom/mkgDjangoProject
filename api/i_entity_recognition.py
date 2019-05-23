@@ -1,4 +1,4 @@
-from mkg_demo.api.baseAPI import BaseApi
+from mkgDjangoProject.api.baseAPI import BaseApi
 
 class EntityRecognitionApi(BaseApi):
     def __init__(self, name=None):
