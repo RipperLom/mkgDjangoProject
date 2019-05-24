@@ -1,7 +1,10 @@
 [
-  {"name":"实体识别"},
-  {"name":"实体查询"},
-  {"name":"关系查询"},
-  {"name":"智能咨询"},
-  {"name":"医学知识概览"}
+  {"name":"属于", "en_name": "belongs_to"},
+  {"name":"别名", "en_name": "alias"},
+  {"name":"常用药品", "en_name": "common_drug"},
+  {"name":"所需检查", "en_name": "need_check"},
+  {"name":"推荐手术", "en_name": "recommend_surgery"},
+  {"name":"症状", "en_name": "has_symptom"},
+  {"name":"并发症", "en_name": "acompany_symptom"},
+  {"name":"患病部位", "en_name": "Common_disease_site"}
 ]

@@ -33,3 +33,18 @@ MKG_GRM = []
 with open(grm_configRel_path, 'r', encoding='utf-8') as fr:
     MKG_GRM = json.load(fr)    # MKG关系内容
     print('MKG_GRM: ', MKG_GRM, '-->type: ', type(MKG_GRM))
+
+
+# 连接neo4j数据库, 并初始化Neo4j对象
+NEO4J_HOST = "http://localhost:7474"
+NEO4J_NAME = "neo4j"
+NEO4J_PSD = "123456"
+from mkg_demo.models.neo4j_model import Neo4j
+NEO4J_OBJ = Neo4j()     # 创建neo4j对象
+try:
+    NEO4J_OBJ.connectDB(host=NEO4J_HOST, username=NEO4J_NAME, password=NEO4J_PSD)
+    print(NEO4J_OBJ)
+    print('初始化neo4j成功！')
+except Exception as e:
+    print('初始化neo4j失败！！！')
+

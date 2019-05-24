@@ -3,7 +3,7 @@ from django.conf import settings
 
 from api.i_entity_query import EntityQueryApi
 from api.i_relation_query import RelationQueryApi
-from api.i_entity_recognition import EntityRecognitionApi
+from api.i_entity_recognition_origin import EntityRecognitionApi
 
 # 初始化菜单
 menus = settings.MKG_MENU    # 菜单

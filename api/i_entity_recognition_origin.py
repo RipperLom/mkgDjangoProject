@@ -1,6 +1,6 @@
 from api.baseAPI import BaseApi
 import thulac, os, csv
-from toolkit.models.neo4jModel import Neo4j
+from django.conf import settings
 
 # get file_dir
 FILE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -11,8 +11,7 @@ class EntityRecognitionApi(BaseApi):
         self.name = name
         self.result = {}
         try:
-            self.db = Neo4j()  # 预加载neo4j
-            self.db.connectDB()
+            self.db = settings.NEO4J_OBJ
         except:
             self.db = None
             print('api/EntityRecognitionApi/error: 请启动Neo4j服务')

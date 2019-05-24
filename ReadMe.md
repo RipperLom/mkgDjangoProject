@@ -14,4 +14,9 @@ git push origin master
 git config --system --unset credential.helper
 
 
-feifei
+
+#问题：
+    1、类型：报错
+       接口：i_entity_recognition
+       描述：输入下列字符串报错：
+        、d'""""'sdf'asdf'sa'sdf'sdfs''/'/'s/f'sdf/'sd'f/ssdfsd

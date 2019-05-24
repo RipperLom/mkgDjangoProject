@@ -8,8 +8,8 @@ class Neo4j():
     def __init__(self):
         print("create neo4j class ...")
 
-    def connectDB(self):
-        self.graph = Graph("http://localhost:7474", username="neo4j", password="123456")
+    def connectDB(self, host, username, password):
+        self.graph = Graph(host, username=username, password=password)
 
     def matchItembyTitle(self, value):
         sql = "MATCH (n:Item { title: '" + str(value) + "' }) return n;"
