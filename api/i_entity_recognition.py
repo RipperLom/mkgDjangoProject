@@ -83,105 +83,106 @@ class EntityRecognitionApi(BaseApi):
 
         return '非实体'
 
-    def get_detail_explain(self, s):
-        if s == 1:
-            return '包括人名，职位'
-        if s == 2:
-            return '包括地名，区域，行政区等'
-        if s == 3:
-            return '包括机构名，会议名，期刊名等'
-        if s == 4:
-            return '包括政府政策，政治术语，经济学术语'
-        if s == 5:
-            return '包括动物名称，动物类别，动物学相关术语'
-        if s == 6:
-            return '包括植物名称，植物类别，植物学相关术语'
-        if s == 7:
-            return '包括化肥，农药，杀菌剂，其它化学品，以及一些化学术语'
-        if s == 8:
-            return '包括天气气候，季节，节气'
-        if s == 9:
-            return '包括肉制品，蔬菜制品，水果制品，豆制品等以动植物为原料的食品，以及一些非食物制品'
-        if s == 10:
-            return '包括传染病，原发性疾病，遗传病等'
-        if s == 11:
-            return '包括一些大型灾害，环境污染，或其它造成经济损失的自然现象'
-        if s == 12:
-            return '包括脂肪，矿物质，维生素，碳水化合物，无机盐等'
-        if s == 13:
-            return '包括人体部位，组织器官，基因相关，微生物，以及一些生物学术语'
-        if s == 14:
-            return '包括用于农业生产的自动化机械，手工工具'
-        if s == 15:
-            return '包括农学名词，农业技术措施'
-        if s == 16:
-            return '与农业领域没有特别直接的关系，但是也是实体'
+    # def get_detail_explain(self, s):
+    #     if s == 1:
+    #         return '包括人名，职位'
+    #     if s == 2:
+    #         return '包括地名，区域，行政区等'
+    #     if s == 3:
+    #         return '包括机构名，会议名，期刊名等'
+    #     if s == 4:
+    #         return '包括政府政策，政治术语，经济学术语'
+    #     if s == 5:
+    #         return '包括动物名称，动物类别，动物学相关术语'
+    #     if s == 6:
+    #         return '包括植物名称，植物类别，植物学相关术语'
+    #     if s == 7:
+    #         return '包括化肥，农药，杀菌剂，其它化学品，以及一些化学术语'
+    #     if s == 8:
+    #         return '包括天气气候，季节，节气'
+    #     if s == 9:
+    #         return '包括肉制品，蔬菜制品，水果制品，豆制品等以动植物为原料的食品，以及一些非食物制品'
+    #     if s == 10:
+    #         return '包括传染病，原发性疾病，遗传病等'
+    #     if s == 11:
+    #         return '包括一些大型灾害，环境污染，或其它造成经济损失的自然现象'
+    #     if s == 12:
+    #         return '包括脂肪，矿物质，维生素，碳水化合物，无机盐等'
+    #     if s == 13:
+    #         return '包括人体部位，组织器官，基因相关，微生物，以及一些生物学术语'
+    #     if s == 14:
+    #         return '包括用于农业生产的自动化机械，手工工具'
+    #     if s == 15:
+    #         return '包括农学名词，农业技术措施'
+    #     if s == 16:
+    #         return '与农业领域没有特别直接的关系，但是也是实体'
+    #
+    #     if s == 21:
+    #         return '科室'
+    #     if s == 22:
+    #         return '疾病'
+    #     if s == 23:
+    #         return '症状'
+    #     if s == 24:
+    #         return '药物'
+    #     if s == 25:
+    #         return '部位'
+    #     if s == 26:
+    #         return '检测项目'
+    #     if s == 27:
+    #         return '手术'
+    #
+    #     if s == 'np':
+    #         return '包括人名，职位'
+    #     if s == 'ns':
+    #         return '包括地名，区域，行政区等'
+    #     if s == 'ni':
+    #         return '包括机构名，会议名，期刊名等'
+    #     if s == 'nz':
+    #         return ' '
+    #     if s == 'i' or s == 'id':
+    #         return ' '
+    #     if s == 'j':
+    #         return ' '
+    #     if s == 'x':
+    #         return ' '
+    #     if s == 't':
+    #         return ' '
+    #
+    #     return '非实体'
 
-        if s == 21:
-            return '科室'
-        if s == 22:
-            return '疾病'
-        if s == 23:
-            return '症状'
-        if s == 24:
-            return '药物'
-        if s == 25:
-            return '部位'
-        if s == 26:
-            return '检测项目'
-        if s == 27:
-            return '手术'
+    # def preok(self, s):  # 上一个词的词性筛选
+    #
+    #     if s == 'n' or s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
+    #         return True
+    #     if s == 'v' or s == 'a' or s == 'i' or s == 'j' or s == 'x' or s == 'id' or s == 'g' or s == 'u':
+    #         return True
+    #     if s == 't' or s == 'm':
+    #         return True
+    #     return False
 
-        if s == 'np':
-            return '包括人名，职位'
-        if s == 'ns':
-            return '包括地名，区域，行政区等'
-        if s == 'ni':
-            return '包括机构名，会议名，期刊名等'
-        if s == 'nz':
-            return ' '
-        if s == 'i' or s == 'id':
-            return ' '
-        if s == 'j':
-            return ' '
-        if s == 'x':
-            return ' '
-        if s == 't':
-            return ' '
+    # def nowok(self, s):  # 当前词的词性筛选
+    #
+    #     if s == 'n' or s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
+    #         return True
+    #     if s == 'a' or s == 'i' or s == 'j' or s == 'x' or s == 'id' or s == 'g' or s == 't':
+    #         return True
+    #     if s == 't' or s == 'm':
+    #         return True
+    #     return False
 
-        return '非实体'
+    # def temporaryok(self, s):  # 一些暂时确定是名词短语的（数据库中可以没有）
+    #     if s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
+    #         return True
+    #     if s == 'j' or s == 'x' or s == 't':
+    #         return True
+    #     return False
 
-    def preok(self, s):  # 上一个词的词性筛选
-
-        if s == 'n' or s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
-            return True
-        if s == 'v' or s == 'a' or s == 'i' or s == 'j' or s == 'x' or s == 'id' or s == 'g' or s == 'u':
-            return True
-        if s == 't' or s == 'm':
-            return True
-        return False
-
-    def nowok(self, s):  # 当前词的词性筛选
-
-        if s == 'n' or s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
-            return True
-        if s == 'a' or s == 'i' or s == 'j' or s == 'x' or s == 'id' or s == 'g' or s == 't':
-            return True
-        if s == 't' or s == 'm':
-            return True
-        return False
-
-    def temporaryok(self, s):  # 一些暂时确定是名词短语的（数据库中可以没有）
-        if s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
-            return True
-        if s == 'j' or s == 'x' or s == 't':
-            return True
-        return False
-
-    def getItem(self, txt, label):
+    def getItem(self, txt, label, gramma):
         item = {}
         item['name'] = txt
         item['tag'] = self.get_explain(label[txt])
+        item['grammar'] = gramma
         if label[txt] > 20:
             item['exist'] = True
         else:
@@ -241,7 +242,7 @@ class EntityRecognitionApi(BaseApi):
                 flag = self.db.matchHudongItembyTitle(p12345)
                 if p12345 in label and flag != None:  # 组合2个词如果得到实体
                     txt = p12345
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 5
                     continue
@@ -250,7 +251,7 @@ class EntityRecognitionApi(BaseApi):
             if not self.db:
                 if p1234 in label:  # 组合2个词如果得到实体
                     txt = p1234
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 4
                     continue
@@ -259,7 +260,7 @@ class EntityRecognitionApi(BaseApi):
                 flag = self.db.matchHudongItembyTitle(p1234)
                 if p1234 in label and flag != None:  # 组合2个词如果得到实体
                     txt = p1234
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 4
                     continue
@@ -268,7 +269,7 @@ class EntityRecognitionApi(BaseApi):
             if not self.db:
                 if p123 in label:  # 组合2个词如果得到实体
                     txt = p123
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 3
                     continue
@@ -277,7 +278,7 @@ class EntityRecognitionApi(BaseApi):
                 flag = self.db.matchHudongItembyTitle(p123)
                 if p123 in label and flag != None:  # 组合2个词如果得到实体
                     txt = p123
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 3
                     continue
@@ -286,7 +287,7 @@ class EntityRecognitionApi(BaseApi):
             if not self.db:
                 if p12 in label:  # 组合2个词如果得到实体
                     txt = p12
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 2
                     continue
@@ -295,7 +296,7 @@ class EntityRecognitionApi(BaseApi):
                 flag = self.db.matchHudongItembyTitle(p12)
                 if p12 in label and flag != None:  # 组合2个词如果得到实体
                     txt = p12
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 2
                     continue
@@ -304,7 +305,7 @@ class EntityRecognitionApi(BaseApi):
             if not self.db:
                 if p1 in label:  # 当前词如果是实体
                     txt = p1
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 1
                     continue
@@ -330,6 +331,7 @@ class EntityRecognitionApi(BaseApi):
             item = {}
             item['name'] = p1
             item['tag'] = self.get_explain(t1)
+            item['grammar'] = t1
             item['exist'] = False
             answerList.append(item)
             i += 1
