@@ -55,6 +55,8 @@ def relation_query(request):
             isexist = True
         return render(request, 'relation_query.html',  {'menus': menus, 'relas': relas, 'result': result, 'isexist': isexist})
     return render(request, 'relation_query.html',  {'menus': menus, 'relas': relas})
+
+
 # 智能咨询
 def robot_conversion(request):
     # handle data
