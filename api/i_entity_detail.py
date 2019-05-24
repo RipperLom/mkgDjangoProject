@@ -10,7 +10,7 @@ class EntityDetailyApi(BaseApi):
         # send data to Invoker
         # in: entity : str
         # out: （1） 如果实体不存在，返回{error:'实体不存在'}
-        #       (2)  如果实体存在，返回{name:'', detail:'', little_propreties: [{key: value, ....}], large_propreties: [{key:value, ...}] , error: ''}
+        #       (2)  如果实体存在，返回{name: '', detail: '', little_propreties: ['key':{'key': 'content'},...], large_propreties: ['key':{'key': 'content'},...] , error: ''}
         entity = kwargs.get('entity')
 
         return self.result
