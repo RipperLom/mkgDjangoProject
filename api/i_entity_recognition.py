@@ -46,8 +46,8 @@ class EntityRecognitionApi(BaseApi):
             return '农机具'
         if s == 15:
             return '农业技术术语'
-        if s == 16:
-            return '其它实体'
+        # if s == 16:
+        #     return '其它实体'
 
         if s == 21:
             return '科室'
@@ -64,22 +64,22 @@ class EntityRecognitionApi(BaseApi):
         if s == 27:
             return '手术'
 
-        if s == 'np':
-            return '人物'
-        if s == 'ns':
-            return '地点'
-        if s == 'ni':
-            return '机构'
-        if s == 'nz':
-            return '专业名词'
-        if s == 'i' or s == 'id':
-            return '习语'
-        if s == 'j':
-            return '简称'
-        if s == 'x':
-            return '其它'
-        if s == 't':
-            return '时间日期'
+        # if s == 'np':
+        #     return '人物'
+        # if s == 'ns':
+        #     return '地点'
+        # if s == 'ni':
+        #     return '机构'
+        # if s == 'nz':
+        #     return '专业名词'
+        # if s == 'i' or s == 'id':
+        #     return '习语'
+        # if s == 'j':
+        #     return '简称'
+        # if s == 'x':
+        #     return '其它'
+        # if s == 't':
+        #     return '时间日期'
 
         return '非实体'
 
@@ -342,11 +342,18 @@ class EntityRecognitionApi(BaseApi):
         # in : text: str
         # out : [{'name': str, 'tag': str, 'exist': bool}, ...]
         text = kwargs['text']
+        text = text.replace('"', '').replace("'", '')
         self.result = self.entityExtract(text)
         return self.result
 
 if __name__ == "__main__":
     text = '我觉的腹部不舒服，我想去风湿科，不知道是不是得的弗郎西丝菌肺炎'
+    text = "[{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]"
+
+    thu1 = thulac.thulac()  # 默认模式
+    TagList = thu1.cut(text, text=False)
+    print(TagList)
+
     entityRecognitionApi = EntityRecognitionApi()
     answerList = entityRecognitionApi.push(text=text)
     for i in answerList:
