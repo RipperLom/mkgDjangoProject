@@ -1,5 +1,6 @@
 from api.baseAPI import BaseApi
 
+# 用于实体的关系展示
 class EntityQueryApi(BaseApi):
     def __init__(self, name=None):
         self.name = name
