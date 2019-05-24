@@ -30,7 +30,7 @@ def entity_query(request):
     entity = data.get('entity', '')
     if entity:
         result = EntityQueryApi().push(**data)
-        isexist = False     # 判断是否存在相关实体
+        isexist = True     # 判断是否存在相关实体
         if result:
             isexist = True
         return render(request, 'entity_query.html',  {'menus': menus, 'result': result, 'isexist': isexist})
@@ -50,7 +50,7 @@ def relation_query(request):
     relation = data.get('relation', '')
     if len(entity1 + entity2 + relation):
         result = RelationQueryApi().push(**data)
-        isexist = False     # 判断是否存在相关结果
+        isexist = True     # 判断是否存在相关结果
         if result:
             isexist = True
         return render(request, 'relation_query.html',  {'menus': menus, 'relas': relas, 'result': result, 'isexist': isexist})
