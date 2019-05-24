@@ -39,7 +39,7 @@ class Triad(object):
                                 index = i
                     if count == 1:
                         for i in data['baseList'][index]['典型症状'].split(' '):
-                            strs = str(data['illness_name']) + '%%' + 'Treatment_of_department' + '%%' + str(i)
+                            strs = str(data['illness_name']) + '%%' + 'illness_classical_symptom' + '%%' + str(i)
                             csv_writer.writerow(strs.split('%%'))
 
     def getIllnessComplication(self, filepath1, filepath2):  # 构建疾病与并发症之间的三元组
@@ -59,7 +59,7 @@ class Triad(object):
                                 index = i
                     if count == 1:
                         for i in data['baseList'][index]['并发症'].split(' '):
-                            strs = str(data['illness_name']) + '%%' + 'Treatment_of_department' + '%%' + str(i)
+                            strs = str(data['illness_name']) + '%%' + 'illness_complication' + '%%' + str(i)
                             csv_writer.writerow(strs.split('%%'))
 
     def getIllnessExamination(self, filepath1, filepath2):  # 构建疾病与相关检查的三元组关系
@@ -78,7 +78,7 @@ class Triad(object):
                                 index = i
                     if count == 1:
                         for i in data['baseList'][index]['临床检查'].split(' '):
-                            strs = str(data['illness_name']) + '%%' + 'Treatment_of_department' + '%%' + str(i)
+                            strs = str(data['illness_name']) + '%%' + 'illness_examination' + '%%' + str(i)
                             csv_writer.writerow(strs.split('%%'))
 
     def getIllnessPathogenicSite(self, filepath1, filepath2):  # 构建疾病与发病部位之间的三元组
@@ -99,7 +99,7 @@ class Triad(object):
                                 index = i
                     if count == 1:
                         for i in data['baseList'][index]['发病部位'].split(' '):
-                            strs = str(data['illness_name']) + '%%' + 'Treatment_of_department' + '%%' + str(i)
+                            strs = str(data['illness_name']) + '%%' + 'illness_pathogenic_site' + '%%' + str(i)
                             csv_writer.writerow(strs.split('%%'))
 
     def getIllnessRegularMedication(self, filepath1, filepath2):  # 构建疾病与常用药品之间的三元组关系
@@ -120,7 +120,7 @@ class Triad(object):
                                 index = i
                     if count == 1:
                         for i in set(data['baseList'][index]['常用药品'].split(' ')):
-                            strs = str(data['illness_name']) + '%%' + 'Treatment_of_department' + '%%' + str(i)
+                            strs = str(data['illness_name']) + '%%' + 'llness_regular_medication' + '%%' + str(i)
                             csv_writer.writerow(strs.split('%%'))
 
     def getIllnessSurgeriesName(self, filepath1, filepath2):  # # 构建疾病与手术的三元组关系
