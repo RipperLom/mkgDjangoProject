@@ -34,6 +34,7 @@ def entity_query(request):
         if result:
             isexist = True
         return render(request, 'entity_query.html',  {'menus': menus, 'result': result, 'isexist': isexist})
+    #   否则显示查询试题后的界面
     return render(request, 'entity_query.html',  {'menus': menus})
 
 
