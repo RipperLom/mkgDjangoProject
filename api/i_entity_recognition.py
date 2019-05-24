@@ -1,6 +1,10 @@
 from api.baseAPI import BaseApi
 import thulac, os, csv
 from toolkit.models.neo4jModel import Neo4j
+
+# get file_dir
+FILE_DIR = os.path.dirname(os.path.dirname(__file__))
+
 class EntityRecognitionApi(BaseApi):
     def __init__(self, name=None):
         self.matchSize = 4  # 拼接的最大范围
@@ -202,12 +206,12 @@ class EntityRecognitionApi(BaseApi):
         # 预加载实体到标注的映射字典
         predict_labels = {}  # 预加载实体到标注的映射字典
         filePath = os.getcwd()
-        with open('../data/djangoWashedFiles/predict_labels.txt', 'r', encoding="utf-8") as csvfile:
+        with open(os.path.join(FILE_DIR, 'data/djangoWashedFiles/predict_labels.txt'), 'r', encoding="utf-8") as csvfile:
             reader = csv.reader(csvfile, delimiter=' ')
             for row in reader:
                 predict_labels[str(row[0])] = int(row[1])
 
-        with open('../data/djangoWashedFiles/totalEntities.txt', 'r', encoding="utf-8") as csvfile:
+        with open(os.path.join(FILE_DIR, 'data/djangoWashedFiles/totalEntities.txt'), 'r', encoding="utf-8") as csvfile:
             reader = csv.reader(csvfile, delimiter=' ')
             for row in reader:
                 try:
