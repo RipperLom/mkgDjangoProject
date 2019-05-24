@@ -161,15 +161,15 @@ class EntityRecognitionApi(BaseApi):
     #         return True
     #     return False
 
-    # def nowok(self, s):  # 当前词的词性筛选
-    #
-    #     if s == 'n' or s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
-    #         return True
-    #     if s == 'a' or s == 'i' or s == 'j' or s == 'x' or s == 'id' or s == 'g' or s == 't':
-    #         return True
-    #     if s == 't' or s == 'm':
-    #         return True
-    #     return False
+    def nowok(self, s):  # 当前词的词性筛选
+
+        if s == 'n' or s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
+            return True
+        if s == 'a' or s == 'i' or s == 'j' or s == 'x' or s == 'id' or s == 'g' or s == 't':
+            return True
+        if s == 't' or s == 'm':
+            return True
+        return False
 
     # def temporaryok(self, s):  # 一些暂时确定是名词短语的（数据库中可以没有）
     #     if s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
@@ -234,7 +234,7 @@ class EntityRecognitionApi(BaseApi):
             if not self.db:
                 if p12345 in label:  # 组合2个词如果得到实体
                     txt = p12345
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 5
                     continue
@@ -314,7 +314,7 @@ class EntityRecognitionApi(BaseApi):
                 flag = self.db.matchHudongItembyTitle(p1)
                 if p1 in label and flag != None and self.nowok(t1):  # 当前词如果是实体
                     txt = p1
-                    item = self.getItem(txt, label)
+                    item = self.getItem(txt, label, t1)
                     answerList.append(item)
                     i += 1
                     continue
