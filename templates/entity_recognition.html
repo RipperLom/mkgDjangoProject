@@ -46,6 +46,15 @@
 {#                            {% autoescape off %}#}
 {#                            <h5>{{ rlt }}</h5>#}
 {#                            {% endautoescape %}#}
+                            <h5>
+                            {% for word in result %}<!--
+                             -->{% if word.exist %}<!--
+                                    --><a href="/entity_query?text={{ word.name }}">{{ word.name }}</a><!--
+                                -->{% else %}<!--
+                                    -->{{ word.name }}<!--
+                                -->{% endif %}<!--
+                            -->{% endfor %}
+                            </h5>
 
                         </div>
                     </div>
@@ -60,9 +69,27 @@
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
                         <div class="panel-body">
-                            {% autoescape off %}
-                            <h5> {{ seg_word }}</h5>
-                            {% endautoescape %}
+{#                            {% autoescape off %}#}
+{#                            <h5> {{ seg_word }}</h5>#}
+{#                            {% endautoescape %}#}
+                            {% for word in result %}
+                                <strong>{{ word.name }}</strong><small>[{{ word.grammar }}]</small>
+                            {% endfor %}
+                            <hr/>
+                            <table>
+                                    <tr>
+                                {% for gram in grams %}
+{#                                    {% if forloop.last %}#}
+                                    {% for k, v in gram.items %}
+                                        <td>【{{ k }}：{{ v }}】</td>
+                                    {% endfor %}
+
+                                    {% if forloop.counter|divisibleby:8  %}
+                                        <tr/><tr>
+                                    {% endif %}
+                                {% endfor %}
+                                    </tr>
+                            </table>
                         </div>
                     </div>
                 </div>

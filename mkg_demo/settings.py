@@ -33,4 +33,3 @@ MKG_GRM = []
 with open(grm_configRel_path, 'r', encoding='utf-8') as fr:
     MKG_GRM = json.load(fr)    # MKG关系内容
     print('MKG_GRM: ', MKG_GRM, '-->type: ', type(MKG_GRM))
-
