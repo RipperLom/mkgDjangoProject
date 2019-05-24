@@ -340,13 +340,14 @@ class EntityRecognitionApi(BaseApi):
     def push(self, **kwargs):
         # send data to Invoker
         # in : text: str
-        # out : [{'name': str, 'tag': str, 'exist': bool}, ...]
-        text = kwargs['text']
+        # out : [{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]
+        # 如果传入空串，返回空列表
+        text = kwargs.get('text', '')
         self.result = self.entityExtract(text)
         return self.result
 
 if __name__ == "__main__":
-    text = '我觉的腹部不舒服，我想去风湿科，不知道是不是得的弗郎西丝菌肺炎'
+    text = "[{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]"
     entityRecognitionApi = EntityRecognitionApi()
     answerList = entityRecognitionApi.push(text=text)
     for i in answerList:

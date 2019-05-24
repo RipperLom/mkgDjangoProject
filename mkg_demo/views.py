@@ -22,9 +22,9 @@ def entity_recognition(request):
     print('entity_recognition: ', request.POST)
     data = request.POST
     text = data.get('text', '')
-    print(text, 'text')
+    print(text, 'text')     # test 110
     if text:
-        result = EntityRecognitionApi().push(**data)
+        result = EntityRecognitionApi().push(text=text)    # [{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]
         print(result)
 
     return render(request, 'entity_recognition.html', {'menus': menus})
