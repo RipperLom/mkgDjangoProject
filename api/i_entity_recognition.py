@@ -362,10 +362,10 @@ if __name__ == "__main__":
     # answerList = entityRecognitionApi.push(text=text)
     # for i in answerList:
     #     print(i)
-
+    import json
     with open('../data/djangoWashedFiles/grammar_list', 'r', encoding="utf-8") as csvfile:
-        line = csvfile.readline()[:-1]
-        grammars = line.split(' ')
-        for grammar in grammars:
-            key, value = grammar.split('/')
-            print(key, value)
+            line = csvfile.readline()[:-1]
+            grammars = line.split(' ')
+            for grammar in grammars:
+                key, value = grammar.split('/')
+                print(key, value)

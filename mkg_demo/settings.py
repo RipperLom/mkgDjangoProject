@@ -25,5 +25,12 @@ mkg_configRel_path = os.path.join(MKGDEMO_CONFIG_DIR, 'mkg_relationname.json')
 MKG_REL = []
 with open(mkg_configRel_path, 'r', encoding='utf-8') as fr:
     MKG_REL = json.load(fr)    # MKG关系内容
-    print('MKG_MENU: ', MKG_REL, '-->type: ', type(MKG_REL))
+    print('MKG_REL: ', MKG_REL, '-->type: ', type(MKG_REL))
+
+# --读取GRAMMARS关系配置
+grm_configRel_path = os.path.join(MKGDEMO_CONFIG_DIR, 'grammars.json')
+MKG_GRM = []
+with open(grm_configRel_path, 'r', encoding='utf-8') as fr:
+    MKG_GRM = json.load(fr)    # MKG关系内容
+    print('MKG_GRM: ', MKG_GRM, '-->type: ', type(MKG_GRM))
 

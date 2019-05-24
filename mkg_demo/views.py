@@ -8,6 +8,7 @@ from api.i_entity_recognition import EntityRecognitionApi
 # 初始化菜单
 menus = settings.MKG_MENU    # 菜单
 relas = settings.MKG_REL    # 关系
+grams = settings.MKG_GRM    # 关系
 for i in menus:
     print(i)
 
@@ -19,13 +20,16 @@ def home_page(request):
 # 实体识别
 def entity_recognition(request):
     # handle data
-    print('entity_recognition: ', request.POST)
-    data = request.POST
-    text = data.get('text', '')
-    print(text, 'text')     # test 110
-    if text:
-        result = EntityRecognitionApi().push(text=text)    # [{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]
-        print(result)
+    method = request.method
+    if method == 'POST':
+        print('entity_recognition: ', request.POST)
+        data = request.POST
+        text = data.get('text', '')
+        print(text, 'text')     # test 110
+        if text:
+            result = EntityRecognitionApi().push(text=text)    # [{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]
+            print(result)
+            return render(request, 'entity_recognition.html', {'menus': menus, 'grams': grams})
 
     return render(request, 'entity_recognition.html', {'menus': menus})
 
