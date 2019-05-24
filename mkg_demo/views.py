@@ -3,6 +3,7 @@ from django.conf import settings
 
 from api.i_entity_query import EntityQueryApi
 from api.i_relation_query import RelationQueryApi
+from api.i_entity_recognition import EntityRecognitionApi
 
 # 初始化菜单
 menus = settings.MKG_MENU    # 菜单
@@ -18,7 +19,15 @@ def home_page(request):
 # 实体识别
 def entity_recognition(request):
     # handle data
-    return render(request, 'index.html', {'menus': menus})
+    print('entity_recognition: ', request.POST)
+    data = request.POST
+    text = data.get('text', '')
+    print(text, 'text')
+    if text:
+        result = EntityRecognitionApi().push(**data)
+        print(result)
+
+    return render(request, 'entity_recognition.html', {'menus': menus})
 
 
 # 实体查询
@@ -30,7 +39,7 @@ def entity_query(request):
     entity = data.get('entity', '')
     if entity:
         result = EntityQueryApi().push(**data)
-        isexist = True     # 判断是否存在相关实体
+        isexist = False     # 判断是否存在相关实体, 默认需要False
         if result:
             isexist = True
         return render(request, 'entity_query.html',  {'menus': menus, 'result': result, 'isexist': isexist})
@@ -50,7 +59,7 @@ def relation_query(request):
     relation = data.get('relation', '')
     if len(entity1 + entity2 + relation):
         result = RelationQueryApi().push(**data)
-        isexist = True     # 判断是否存在相关结果
+        isexist = True    # 判断是否存在相关结果, 默认需要False
         if result:
             isexist = True
         return render(request, 'relation_query.html',  {'menus': menus, 'relas': relas, 'result': result, 'isexist': isexist})
@@ -61,6 +70,8 @@ def relation_query(request):
 def robot_conversion(request):
     # handle data
     return render(request, 'robot_conversion.html',  {'menus': menus})
+
+
 #  医学知识概览
 def mkg_classify(request):
     # handle data
