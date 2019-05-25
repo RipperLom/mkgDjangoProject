@@ -10,14 +10,15 @@ class EntityRecognitionApi(BaseApi):
         self.matchSize = 4  # 拼接的最大范围
         self.name = name
         self.result = {}
-        try:
-            self.db = Neo4j()  # 预加载neo4j
-            self.db.connectDB()
-        except:
-            self.db = None
-            print('api/EntityRecognitionApi/error: 请启动Neo4j服务')
-        else:
-            pass
+        self.db = None
+        # try:
+        #     self.db = Neo4j()  # 预加载neo4j
+        #     self.db.connectDB()
+        # except:
+        #     self.db = None
+        #     print('api/EntityRecognitionApi/error: 请启动Neo4j服务')
+        # else:
+        #     pass
 
     def get_explain(self, s):
         if s == 1:
@@ -87,84 +88,6 @@ class EntityRecognitionApi(BaseApi):
 
         return '非实体'
 
-    # def get_detail_explain(self, s):
-    #     if s == 1:
-    #         return '包括人名，职位'
-    #     if s == 2:
-    #         return '包括地名，区域，行政区等'
-    #     if s == 3:
-    #         return '包括机构名，会议名，期刊名等'
-    #     if s == 4:
-    #         return '包括政府政策，政治术语，经济学术语'
-    #     if s == 5:
-    #         return '包括动物名称，动物类别，动物学相关术语'
-    #     if s == 6:
-    #         return '包括植物名称，植物类别，植物学相关术语'
-    #     if s == 7:
-    #         return '包括化肥，农药，杀菌剂，其它化学品，以及一些化学术语'
-    #     if s == 8:
-    #         return '包括天气气候，季节，节气'
-    #     if s == 9:
-    #         return '包括肉制品，蔬菜制品，水果制品，豆制品等以动植物为原料的食品，以及一些非食物制品'
-    #     if s == 10:
-    #         return '包括传染病，原发性疾病，遗传病等'
-    #     if s == 11:
-    #         return '包括一些大型灾害，环境污染，或其它造成经济损失的自然现象'
-    #     if s == 12:
-    #         return '包括脂肪，矿物质，维生素，碳水化合物，无机盐等'
-    #     if s == 13:
-    #         return '包括人体部位，组织器官，基因相关，微生物，以及一些生物学术语'
-    #     if s == 14:
-    #         return '包括用于农业生产的自动化机械，手工工具'
-    #     if s == 15:
-    #         return '包括农学名词，农业技术措施'
-    #     if s == 16:
-    #         return '与农业领域没有特别直接的关系，但是也是实体'
-    #
-    #     if s == 21:
-    #         return '科室'
-    #     if s == 22:
-    #         return '疾病'
-    #     if s == 23:
-    #         return '症状'
-    #     if s == 24:
-    #         return '药物'
-    #     if s == 25:
-    #         return '部位'
-    #     if s == 26:
-    #         return '检测项目'
-    #     if s == 27:
-    #         return '手术'
-    #
-    #     if s == 'np':
-    #         return '包括人名，职位'
-    #     if s == 'ns':
-    #         return '包括地名，区域，行政区等'
-    #     if s == 'ni':
-    #         return '包括机构名，会议名，期刊名等'
-    #     if s == 'nz':
-    #         return ' '
-    #     if s == 'i' or s == 'id':
-    #         return ' '
-    #     if s == 'j':
-    #         return ' '
-    #     if s == 'x':
-    #         return ' '
-    #     if s == 't':
-    #         return ' '
-    #
-    #     return '非实体'
-
-    # def preok(self, s):  # 上一个词的词性筛选
-    #
-    #     if s == 'n' or s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
-    #         return True
-    #     if s == 'v' or s == 'a' or s == 'i' or s == 'j' or s == 'x' or s == 'id' or s == 'g' or s == 'u':
-    #         return True
-    #     if s == 't' or s == 'm':
-    #         return True
-    #     return False
-
     def nowok(self, s):  # 当前词的词性筛选
 
         if s == 'n' or s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
@@ -174,13 +97,6 @@ class EntityRecognitionApi(BaseApi):
         if s == 't' or s == 'm':
             return True
         return False
-
-    # def temporaryok(self, s):  # 一些暂时确定是名词短语的（数据库中可以没有）
-    #     if s == 'np' or s == 'ns' or s == 'ni' or s == 'nz':
-    #         return True
-    #     if s == 'j' or s == 'x' or s == 't':
-    #         return True
-    #     return False
 
     def getItem(self, txt, label, gramma):
         item = {}
@@ -351,21 +267,19 @@ class EntityRecognitionApi(BaseApi):
 
 if __name__ == "__main__":
     text = '我觉的腹部不舒服，我想去风湿科，不知道是不是得的弗郎西丝菌肺炎'
+    text = ' 、d\'""""\'sdf\'asdf\'sa\'sdf\'sdfs\'\'/\'/\'s/f\'sdf/\'sd\'f/ssdfsd'
 
     # text = "[{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]"
 
-    # thu1 = thulac.thulac()  # 默认模式
-    # TagList = thu1.cut(text, text=False)
-    # print(TagList)
 
-    # entityRecognitionApi = EntityRecognitionApi()
-    # answerList = entityRecognitionApi.push(text=text)
-    # for i in answerList:
-    #     print(i)
+    entityRecognitionApi = EntityRecognitionApi()
+    answerList = entityRecognitionApi.push(text=text)
+    for i in answerList:
+        print(i)
     import json
-    with open('../data/djangoWashedFiles/grammar_list', 'r', encoding="utf-8") as csvfile:
-            line = csvfile.readline()[:-1]
-            grammars = line.split(' ')
-            for grammar in grammars:
-                key, value = grammar.split('/')
-                print(key, value)
+    # with open('../data/djangoWashedFiles/grammar_list', 'r', encoding="utf-8") as csvfile:
+    #         line = csvfile.readline()[:-1]
+    #         grammars = line.split(' ')
+    #         for grammar in grammars:
+    #             key, value = grammar.split('/')
+    #             print(key, value)
