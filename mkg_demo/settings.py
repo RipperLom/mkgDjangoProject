@@ -39,7 +39,7 @@ with open(grm_configRel_path, 'r', encoding='utf-8') as fr:
 NEO4J_HOST = "http://localhost:7474"
 NEO4J_NAME = "neo4j"
 NEO4J_PSD = "123456"
-from mkg_demo.models.neo4j_model import Neo4j
+from toolkit.models.neo4j_model import Neo4j
 NEO4J_OBJ = Neo4j()     # 创建neo4j对象
 try:
     NEO4J_OBJ.connectDB(host=NEO4J_HOST, username=NEO4J_NAME, password=NEO4J_PSD)
