@@ -79,10 +79,10 @@ class EntityRecognitionApi(BaseApi):
             return '专业名词'
         if s == 'i' or s == 'id':
             return '习语'
-        if s == 'j':
-            return '简称'
-        if s == 'x':
-            return '其它'
+        # if s == 'j':
+        #     return '简称'
+        # if s == 'x':
+        #     return '其它'
         if s == 't':
             return '时间日期'
 
