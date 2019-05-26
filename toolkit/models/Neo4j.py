@@ -23,9 +23,22 @@ class Neo4j():
 
     #查找疾病及其对应的关系
     def findRelationByEntity(self,entity1, entity2):
-        sql = "match (n{name:'"+entity1+"'})-[r]-(m{name:'"+entity2+"'}) return r"
-        answer = self.graph.run(sql).data()
-        return answer
+        # MATCH p = shortestpath((a{name:'嗜睡'}) - [*1..] - (b{name:'脑脓肿'})) RETURN p
+        # sql = "match p= shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) return p;"
+        sql = "MATCH p=shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) RETURN r"
+        answer = self.graph.run(sql).evaluate()
+
+        relationDict = []
+        if (answer is not None):
+            for x in answer:
+                tmp = {}
+                start_node = x.start_node()
+                end_node = x.end_node()
+                tmp['n1'] = start_node
+                tmp['n2'] = end_node
+                tmp['rel'] = str(x).replace(':', " ").split(" ")[1]
+                relationDict.append(tmp)
+        return relationDict
 
     #查找指定的实体和关系
     def findRelationByEntityAndRelation(self,entity1, entity2,relation):
@@ -91,6 +104,8 @@ if __name__ == '__main__':
     # model.createNode('illness_name.csv','Disease')
     # print(model.findRelationByEntityAndRelation('现代病','心理咨询','BELONG_TO'))
     # model.createRelation('illness_another_names.csv', 'Disease', 'Disease', 'Alias')
+    for i in model.findRelationByEntity('嗜睡', '脑脓肿'):
+        print(i)
 
 
 
