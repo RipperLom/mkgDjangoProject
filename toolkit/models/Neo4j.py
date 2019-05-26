@@ -17,7 +17,7 @@ class Neo4j():
     print(type(ss[0]['n']['cost']))    <class 'str'>
     '''
     def matchDiseaseByName(self,value):
-        sql = "MATCH (n:Disease { name: '" + str(value) + "' })-[]-()-[r]->(nb) return n,r,nb;"
+        sql = "MATCH (n:Disease { name: '" + str(value) + "' })-[ra]-(na)-[rb]->(nb) return n,ra,na,rb,nb;"
         answer = self.graph.run(sql).data()
         return answer
 
@@ -54,12 +54,12 @@ class Neo4j():
                     else:
                         interim = msg[i].strip().split('"')
                         onemesglist=interim[0].split(',')[:-1] + [interim[1]] + interim[2].split(',')[1:]
-                    for i in range(len(onemesglist)):
-                        sql +=propotynamelist[i]+":'"+onemesglist[i].strip().replace('\\','').replace('"','')+"',"
+                    for j in range(len(onemesglist)):
+                        sql += propotynamelist[j]+':"'+onemesglist[j].strip().replace('\\','').replace('"','')+'",'
                     sql = sql[:-1]+"})"
                 # print(sql)
-                self.graph.run(sql)
-                print(labelname+'导入完成比例：{:.2f}%'.format((i / len(msg)) * 100))
+                    self.graph.run(sql)
+                    print(labelname+'导入完成比例：{:.2f}%'.format(((i+1) / len(msg)) * 100))
         self.graph.run('CREATE CONSTRAINT ON (c:'+labelname+') ASSERT c.name IS UNIQUE')
                 # CREATE(p: Disease
                 # {name: line.name, medical_insurance: line.medical_insurance, infectivity: line.infectivity,
