@@ -1,0 +1,110 @@
+{% extends "base.html" %} {% block mainbody %}
+
+    <title>详细资料</title>
+
+    <div class="container">
+        <div class="row">
+            <!--overview start-->
+
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="page-header"><i class="fa fa-indent"></i> 实体百科 </h3>
+                        <ol class="breadcrumb">
+                            <li><i class="fa fa-home"></i><a href="\">Home</a></li>
+                            <li><i class="fa fa-search"></i><a href="../">命名实体识别</a></li>
+                            <li><i class="fa fa-indent"></i>实体百科</li>
+                        </ol>
+                    </div>
+                </div>
+                {% autoescape off %}
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="panel panel-default">
+
+                                <!--代表将html标签文本转义成标签显示-->
+                                <div class="panel-body">
+                                    <div class="page-header">
+                                        <h1>{{ result.name }}</h1>
+                                        {{ openTypeList }}
+                                    </div>
+                                    <hr class="my-4"/>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <a href="#" class="thumbnail">
+                                                <img src="{{ result.url }}" alt="该条目无图片" height="100%" width="100%">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p class="card-text">
+                                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ result.detail }}</p>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    {% for infolistkey, inflistvalue in result.little_propreties.items %}
+
+                                        <h3>{{ infolistkey }}</h3>
+                                        <table class="table table-striped table-advance table-hover">
+                                            {% for infokey, infovalue in inflistvalue.items %}
+{#                                                    {% for itemk, itemv in infovalue %}#}
+                                                    <tr>
+                                                        <td><strong>{{ infokey }}：</strong></td>
+                                                        <td>{{ infovalue }}</td>
+                                                    </tr>
+{#                                                    {% endfor %}#}
+                                            {% endfor %}
+                                        </table>
+                                    {% endfor %}
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <!--词云面板-->
+                                <div class="panel-body">
+                                    <h4>相关概念：</h4>
+                                    <!-- begin -->
+                                    <div class="tagcloud">
+                                        <!-- class="tagcloud" - 用途js.css -->
+                                        {% for relname in result.relation_name %}
+                                            <a href="/detail?entity={{ relname }}" > {{ relname }}</a>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- end -->
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <!--医学类型：-->
+                                <div class="panel-body">
+                                    <h4>医学类型：</h4>
+                                    <!-- begin -->
+                                    医学/{{ result.name }}
+
+                                    <!-- end -->
+                                </div>
+
+                            </div>
+                            <div class="panel panel-default">
+                                <!--农业类型：-->
+                                <div class="panel-body">
+                                    <h4>实体类型：</h4>
+                                    <!-- begin -->
+
+                                    {{ result.type_detail }}
+                                    <!-- end -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endautoescape %}
+            </div>
+        </div>
+    </div>
+    <script>
+    </script>
+
+{% endblock %}

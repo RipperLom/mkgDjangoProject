@@ -27,4 +27,5 @@ urlpatterns = [
     path('relation_query/', mv.relation_query),
     path('robot_conversion/', mv.robot_conversion),
     path('mkg_classify/', mv.mkg_classify),
+    path('detail/', mv.detail),
 ]

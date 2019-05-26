@@ -4,6 +4,7 @@ from django.conf import settings
 from api.i_entity_query import EntityQueryApi
 from api.i_relation_query import RelationQueryApi
 from api.i_entity_recognition_origin import EntityRecognitionApi
+from api.i_entity_detail import EntityDetailyApi
 
 # 初始化菜单
 menus = settings.MKG_MENU    # 菜单
@@ -80,3 +81,38 @@ def robot_conversion(request):
 def mkg_classify(request):
     # handle data
     return render(request, 'mkg_classify.html',  {'menus': menus})
+
+
+# 详细信息查询
+def detail(request):
+    # handle data
+    '''{
+        name: '',
+        detail: '',
+        url: '',
+        'little_propreties:' {'key':{'key': 'content', ...},...},
+        large_propreties: {'key':{'key': 'content', ...},...} ,
+         error: '',
+    }'''
+    result = {
+            'name': '标题',
+            'detail': '这里是内容',
+            'url': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558886937356&di=443322fe10034bc8be13e1438ccb924f&imgtype=0&src=http%3A%2F%2Fi1.bbs.fd.zol-img.com.cn%2Ft_s800x5000%2Fg5%2FM00%2F0B%2F0F%2FChMkJln10OuIHZh8AACJEEEqIzAAAhqsgBp1mIAAIko407.jpg',
+            'little_propreties': {'小标题1':{'中文名称': 'ADM公司', '组织形式': '个人独资'}, '小标题2':{'中文名称': 'ADM公司', '组织形式': '个人独资'}},
+            'large_propreties': {'大标题1':{'中文名称': 'ADM公司', '组织形式': '个人独资'}, '大标题2':{'中文名称': 'ADM公司', '组织形式': '个人独资'}} ,
+            'type': '医学院',
+            'relation_name': ['中国科学研究院', '猪脑袋', '感冒1', '感冒2', '感冒3', ],
+            'error': ''
+        }
+
+    # data = request.GET
+    # entity = data.get('entity', '')
+    # if entity:
+    #     result = EntityDetailyApi().push()
+    #
+    #     # 先判断 error
+    #     error = result.get('error', '')
+    #     if not error:
+    #         return  render(request, 'detail.html', {'menus': menus})
+    # return redirect('/')
+    return render(request, 'detail.html', {'menus': menus, 'result': result})
