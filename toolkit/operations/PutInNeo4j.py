@@ -1,10 +1,10 @@
-﻿from utils import Neo4j
+﻿from toolkit.models import Neo4j
 
 neo4jmodel = Neo4j.Neo4j()
 
 #导入实体
-# print('实体加载开始：')
-# neo4jmodel.createNode('../../data/csvOrTxtFiles/another_names.csv','Disease') # 导入疾病别名
+print('实体加载开始：')
+neo4jmodel.createNode('../../data/csvOrTxtFiles/another_names.csv','Disease') # 导入疾病别名
 # neo4jmodel.createNode('../../data/csvOrTxtFiles/complication_name.csv','Symptom') # 导入并发症实体
 # neo4jmodel.createNode('../../data/csvOrTxtFiles/examination_name.csv','Operation') #导入检查实体
 # neo4jmodel.createNode('../../data/csvOrTxtFiles/illness_name.csv','Disease') #导入疾病实体
@@ -17,7 +17,7 @@ neo4jmodel = Neo4j.Neo4j()
 #导入关系
 # 导入病名实体和病名别名实体之间的关系
 print('加载关系！！')
-neo4jmodel.createRelation('../../data/csvOrTxtFiles/NLPProject/illness_another_names.csv','Disease','Disease','ALIAS')
+neo4jmodel.createRelation('../../data/csvOrTxtFiles/illness_another_names.csv','Disease','Disease','ALIAS')
 # 导入病名实体和症状实体之间的关系
 neo4jmodel.createRelation('../../data/csvOrTxtFiles/illness_classical_symptom.csv','Disease','Symptom','HAS_SYMPTOM')
 # 导入病名实体和并发症实体之间的关系

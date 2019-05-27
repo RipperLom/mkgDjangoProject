@@ -1,4 +1,3 @@
-# import neo4j
 from py2neo import Graph, Node, Relationship, cypher,Path
 #创建Neo4j类
 class Neo4j():
@@ -104,8 +103,8 @@ if __name__ == '__main__':
     # model.createNode('illness_name.csv','Disease')
     # print(model.findRelationByEntityAndRelation('现代病','心理咨询','BELONG_TO'))
     # model.createRelation('illness_another_names.csv', 'Disease', 'Disease', 'Alias')
-    # for i in model.matchByName('脑脓肿'):
-    #     print(i)
+    for i in model.matchByName('脑脓肿'):
+        print(i)
 
 
 
