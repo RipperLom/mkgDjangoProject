@@ -119,3 +119,44 @@ def detail(request):
     result['entype'] = mkg_entype.get(result.get('type', ''), '')
     print(result)
     return render(request, 'detail.html', {'menus': menus, 'result': result})
+
+
+def createNodes(nodes, tree_content):
+    tree_content += '<ul>'
+    if type(nodes) == list:
+        for node in nodes:
+            tree_content += '<li class="parent_li">'
+            tree_content += '<span title="Collapse this branch"><i class="fa fa-minus-square" aria-hidden="true"></i>&nbsp;'+ node.get('text', '==') +'</span>'
+            tree_content += '<a href="">&nbsp;&nbsp;[进入分类]</a>'
+
+
+
+
+if __name__ == '__main__':
+    object = {
+        'text': '一级目录',
+        'nodes': [
+            {
+                'text': '二级目录',
+                'nodes': [
+                    {
+                        'text': '三级目录',
+                        'nodes': None
+                    },
+                    {
+                        'text': '三级目录',
+                        'nodes': None
+                    }
+                ]},
+            {
+                'text': '二级目录',
+                'nodes': [
+                    {
+                        'text': '三级目录',
+                        'nodes': None
+                    }
+                ]}
+        ]
+    }
+    tree_content = ""
+    createNodes(object, tree_content)
