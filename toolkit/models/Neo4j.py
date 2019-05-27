@@ -39,9 +39,14 @@ class Neo4j():
                 relationDict.append(tmp)
         return relationDict
 
-    #查找指定的实体和关系
+    #查找指定的两个实体和关系
     def findRelationByEntityAndRelation(self,entity1, entity2,relation):
         sql = "match (n{name:'" + entity1 + "'})-[r:"+relation+"]-(m{name:'" + entity2 + "'}) return r"
+        answer = self.graph.run(sql).data()
+        return answer
+    #查找指定的一个实体和关系
+    def findRelationByEntityAndRelation(self,entity,relation):
+        sql = "match (n1{name:'" + entity + "'})-[r:"+relation+"]-(n2) return n1,labels(n1),r,n2,labels(n2)"
         answer = self.graph.run(sql).data()
         return answer
     #添加节点到graph中
@@ -105,60 +110,4 @@ if __name__ == '__main__':
     # model.createRelation('illness_another_names.csv', 'Disease', 'Disease', 'Alias')
     for i in model.matchByName('脑脓肿'):
         print(i)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
