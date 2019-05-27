@@ -100,7 +100,7 @@ def detail(request):
             'url': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558886937356&di=443322fe10034bc8be13e1438ccb924f&imgtype=0&src=http%3A%2F%2Fi1.bbs.fd.zol-img.com.cn%2Ft_s800x5000%2Fg5%2FM00%2F0B%2F0F%2FChMkJln10OuIHZh8AACJEEEqIzAAAhqsgBp1mIAAIko407.jpg',
             'little_propreties': {'小标题1':{'中文名称': 'ADM公司', '组织形式': '个人独资'}, '小标题2':{'中文名称': 'ADM公司', '组织形式': '个人独资'}},
             'large_propreties': {'大标题1':{'中文名称': 'ADM公司', '组织形式': '个人独资'}, '大标题2':{'中文名称': 'ADM公司', '组织形式': '个人独资'}} ,
-            'type': '医学院',
+            'type': 'Pathogenic_Site',
             'relation_name': ['中国科学研究院', '猪脑袋', '感冒1', '感冒2', '感冒3', ],
             'error': ''
         }
@@ -115,4 +115,7 @@ def detail(request):
     #     if not error:
     #         return  render(request, 'detail.html', {'menus': menus})
     # return redirect('/')
+    mkg_entype = settings.MKG_ENTYPE
+    result['entype'] = mkg_entype.get(result.get('type', ''), '')
+    print(result)
     return render(request, 'detail.html', {'menus': menus, 'result': result})

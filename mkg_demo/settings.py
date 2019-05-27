@@ -48,3 +48,13 @@ try:
 except Exception as e:
     print('初始化neo4j失败！！！')
 
+
+# 获取实体类型内容
+entity_type_en2cn_path = os.path.join(MKGDEMO_CONFIG_DIR, 'entity_type_en2cn.json')
+MKG_ENTYPE = {}
+with open(entity_type_en2cn_path, 'r', encoding='utf-8') as fr:
+    MKG_ENTYPE_LIST = json.load(fr)    # MKG关系内容
+    print('MKG_ENTYPE: ', MKG_ENTYPE, '-->type: ', type(MKG_ENTYPE))
+for line in MKG_ENTYPE_LIST:
+    MKG_ENTYPE[line['type']] = line
+

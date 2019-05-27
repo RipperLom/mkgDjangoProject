@@ -41,20 +41,38 @@
                                         </div>
                                     </div>
                                     <br/>
+                                    <!--小标题位置 -->
                                     {% for infolistkey, inflistvalue in result.little_propreties.items %}
+
+                                        <h3>{{ infolistkey }}</h3>
+                                        {% load get_tags %}
+                                        <table class="table table-striped table-advance table-hover">
+                                            {% for infokey, infovalue in inflistvalue.items %}
+                                                    {%  ifequal forloop.counter|get_remainder:2 1 %}
+                                                        <tr>
+                                                    {% endifequal %}
+                                                        <td><strong>{{ infokey }}：</strong></td>
+                                                        <td>{{ infovalue }}</td>
+                                                    {%  ifequal forloop.counter|get_remainder:2 0 %}
+                                                        </tr>
+                                                    {% endifequal %}
+                                            {% endfor %}
+                                        </table>
+                                    {% endfor %}
+                                    <!-- 大标题位置 -->
+                                    {% for infolistkey, inflistvalue in result.large_propreties.items %}
 
                                         <h3>{{ infolistkey }}</h3>
                                         <table class="table table-striped table-advance table-hover">
                                             {% for infokey, infovalue in inflistvalue.items %}
-{#                                                    {% for itemk, itemv in infovalue %}#}
                                                     <tr>
                                                         <td><strong>{{ infokey }}：</strong></td>
                                                         <td>{{ infovalue }}</td>
                                                     </tr>
-{#                                                    {% endfor %}#}
                                             {% endfor %}
                                         </table>
                                     {% endfor %}
+
                                 </div>
 
 
@@ -81,19 +99,19 @@
                                 <div class="panel-body">
                                     <h4>医学类型：</h4>
                                     <!-- begin -->
-                                    医学/{{ result.name }}
+                                    医学/{{ result.entype.en_type }}
 
                                     <!-- end -->
                                 </div>
 
                             </div>
                             <div class="panel panel-default">
-                                <!--农业类型：-->
+                                <!--医学类型：-->
                                 <div class="panel-body">
-                                    <h4>实体类型：</h4>
+                                    <h4>医学类型：</h4>
                                     <!-- begin -->
 
-                                    {{ result.type_detail }}
+                                    {{ result.entype.describe}}
                                     <!-- end -->
                                 </div>
                             </div>
