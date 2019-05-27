@@ -1,4 +1,4 @@
-import neo4j
+# import neo4j
 from py2neo import Graph, Node, Relationship, cypher,Path
 #创建Neo4j类
 class Neo4j():
