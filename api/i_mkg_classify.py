@@ -1,31 +1,12 @@
 from api.baseAPI import BaseApi
+from django.conf import settings
 
 # 用于实体的关系展示
-class EntityQueryApi(BaseApi):
+class ClassifyApi(BaseApi):
     def __init__(self, name=None):
         self.name = name
         self.result = {}
-        self.relation = self.get_relation()
-
-    def get_relation(self):
-        with open('micropedia_tree.txt', 'r', encoding='utf-8') as fr:
-            data = fr.readlines()
-            data = [i.replace('\n', '') for i in data]
-        print(data)
-        print(len(data))
-
-        relation = {}
-        for d in data:
-            k, v = d.split(' ')
-            # if v not in ['手术', '疾病', '症状', '检查']:
-            if not relation.get(k, None):
-                print(v)
-                relation[k] = [v, ]
-            else:
-                relation[k].append(v)
-
-        self.relation = relation
-        return relation
+        self.relation = settings.RELATION
 
     def get_result(self, relation, currentnode):
         nodes_text = relation.get(currentnode.get('text'))
@@ -43,11 +24,15 @@ class EntityQueryApi(BaseApi):
         # in: query : str
         # out: []
         query = kwargs.get('query', '')
+        if not query:
+            query = '科室'
+        query = {'text': query}
         self.result = self.get_result(self.relation, query)
+        print('结果为：', self.result)
         return self.result
 
 
 if __name__ == '__main__':
-    obj = EntityQueryApi().push(query='科室')
-    print(obj)
-
+    # obj = EntityQueryApi().push(query='科室')
+    # print(obj)
+    pass

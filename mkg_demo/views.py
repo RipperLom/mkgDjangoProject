@@ -5,6 +5,7 @@ from api.i_entity_query import EntityQueryApi
 from api.i_relation_query import RelationQueryApi
 from api.i_entity_recognition_origin import EntityRecognitionApi
 from api.i_entity_detail import EntityDetailyApi
+from api.i_mkg_classify import ClassifyApi
 
 # 初始化菜单
 menus = settings.MKG_MENU    # 菜单
@@ -80,7 +81,12 @@ def robot_conversion(request):
 #  医学知识概览
 def mkg_classify(request):
     # handle data
-    return render(request, 'mkg_classify.html',  {'menus': menus})
+    data = request.GET
+    classify_name = data.get('query', '')
+    result = ClassifyApi().push(**data)
+    import json
+    print(json.dumps(result, ensure_ascii=False))
+    return render(request, 'mkg_classify.html', {'menus': menus, 'result': json.dumps(result, ensure_ascii=False)})
 
 
 # 详细信息查询

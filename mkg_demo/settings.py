@@ -58,3 +58,18 @@ with open(entity_type_en2cn_path, 'r', encoding='utf-8') as fr:
 for line in MKG_ENTYPE_LIST:
     MKG_ENTYPE[line['type']] = line
 
+# 树结构关系数据文本
+tree_path = os.path.join(os.path.dirname(MKGDEMO_BASE_DIR), 'data', 'djangoWashedFiles', 'micropedia_tree.txt')
+with open(tree_path, 'r', encoding='utf-8') as fr:
+    data = fr.readlines()
+    data = [i.replace('\n', '') for i in data]
+    print('读取树结构成功。。，')
+RELATION = {}   # 树结构内容保存
+for d in data:
+    k, v = d.split(' ')
+    if not RELATION.get(k, None):
+        RELATION[k] = [v, ]
+    else:
+        RELATION[k].append(v)
+
+
