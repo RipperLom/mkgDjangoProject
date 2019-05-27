@@ -16,8 +16,8 @@ class Neo4j():
     print(ss[0]['n']['cost'])      市三甲医院约1000-3000元
     print(type(ss[0]['n']['cost']))    <class 'str'>
     '''
-    def matchDiseaseByName(self,value):
-        sql = "MATCH (n:Disease { name: '" + str(value) + "' })-[ra]-(na)-[rb]->(nb) return n,ra,na,rb,nb;"
+    def matchByName(self,value):
+        sql = "MATCH (n1 { name: '" + str(value) + "' })-[r]-(n2) return n1,labels(n1),r,n2,labels(n2);"
         answer = self.graph.run(sql).data()
         return answer
 
@@ -104,8 +104,8 @@ if __name__ == '__main__':
     # model.createNode('illness_name.csv','Disease')
     # print(model.findRelationByEntityAndRelation('现代病','心理咨询','BELONG_TO'))
     # model.createRelation('illness_another_names.csv', 'Disease', 'Disease', 'Alias')
-    for i in model.findRelationByEntity('嗜睡', '脑脓肿'):
-        print(i)
+    # for i in model.matchByName('脑脓肿'):
+    #     print(i)
 
 
 
