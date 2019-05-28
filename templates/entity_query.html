@@ -110,20 +110,20 @@
                     {
                         type: 'graph',
                         layout: 'force',
-                        symbolSize: 30,
+                        symbolSize: 50,
                         roam: true,
                         edgeSymbol: ['circle', 'arrow'],
                         edgeSymbolSize: [4, 10],
                         edgeLabel: {
                             normal: {
                                 textStyle: {
-                                    fontSize: 20
+                                    fontSize: 10
                                 }
                             }
                         },
                         force: {
-                            repulsion: 2500,
-                            edgeLength: [10, 50]
+                            repulsion: 1500,
+                            edgeLength: [20, 50]
                         },
                         draggable: true,
                         itemStyle: {
@@ -134,7 +134,7 @@
                         lineStyle: {
                             normal: {
                                 width: 2,
-                                color: '#4b565b'
+                                color: '#000000'
 
                             }
                         },
@@ -152,8 +152,8 @@
                                 textStyle: {}
                             }
                         },
-                        data: {{ result.entity }},
-                        links: {{ result.relation }}
+                        data: {{ result.entity|safe }},
+                        links: {{ result.relation|safe }}
                     }
                 ]
             };

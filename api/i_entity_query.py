@@ -31,10 +31,11 @@ class EntityQueryApi(BaseApi):
         #     name: "举报"        # 关系名
         # }...]
         # }
-        entity = kwargs.get('entity')
+        entity = kwargs.get('entity', '')[0]
         color = {'Disease':'red','Department':'#f5a5c0','Drug':'yellow','Check':'#f4c89e','Operation':'#c23531','Pathogenic_Site':'#f2acf6','Symptom':'#acf3f6'}
         #对输入查询数据名称进行正则化
         s = r"[\\\'\"\“\”\‘\’\s\:\、\。\,\.\，\;\·\！\@\#\￥\%\……\&\*\（\）\{\}\【\】\$\/\|\(\)\~\：\；\^\?\？\<\>\《\》\-\+\=\。。。\——]*"
+        print('entity：',  entity)
         entity = re.sub(s,'',entity)
         match = Neo4j()
         data = match.matchByName(entity)

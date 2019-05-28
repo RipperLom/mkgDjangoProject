@@ -24,7 +24,8 @@ class EntityDetailyApi(BaseApi):
         #  error: ''
         # }
         #对输入查询数据名称进行正则化
-        entity = kwargs.get('entity')
+        entity = kwargs.get('entity', [''])[0]
+        print('entity: ', entity)
         s = r"[\\\'\"\“\”\‘\’\s\:\、\。\,\.\，\;\·\！\@\#\￥\%\……\&\*\（\）\{\}\【\】\$\/\|\(\)\~\：\；\^\?\？\<\>\《\》\-\+\=\。。。\——]*"
         entity = re.sub(s,'',entity)
         match = Neo4j()
@@ -58,7 +59,7 @@ class EntityDetailyApi(BaseApi):
             else:
                 detail = ''
             if 'img' in di.keys():
-                img = di['detail']
+                img = di['img']
             else:
                 img = ''
 

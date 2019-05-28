@@ -34,6 +34,7 @@ class RelationQueryApi(BaseApi):
         entity1 = kwargs.get('entity1','')
         entity2 = kwargs.get('entity2','')
         relation = kwargs.get('relation','')
+        print(entity2, entity1, relation)
         color = {'Disease': 'red', 'Department': '#f5a5c0', 'Drug': 'yellow', 'Check': '#f4c89e',
                  'Operation': '#c23531', 'Pathogenic_Site': '#f2acf6', 'Symptom': '#acf3f6'}
         s = r"[\\\'\"\“\”\‘\’\s\:\、\。\,\.\，\;\·\！\@\#\￥\%\……\&\*\（\）\{\}\【\】\$\/\|\(\)\~\：\；\^\?\？\<\>\《\》\-\+\=\。。。\——]*"
@@ -43,7 +44,7 @@ class RelationQueryApi(BaseApi):
                 entity1 = re.sub(s, '', entity1)
                 entity2 = re.sub(s, '', entity2)
                 match = Neo4j()
-                data = match.findRelationByEntityAndRelation(entity1=entity1,entity2=entity2,relation=relation)
+                data = match.findRelationByEntitiesAndRelation(entity1=entity1,entity2=entity2,relation=relation)
                 if data:
                     relation = []
                     # 获取相关关系节点的节点名。
@@ -96,12 +97,112 @@ class RelationQueryApi(BaseApi):
                     self.result = {}
             elif entity1:
                 entity1 = re.sub(s, '', entity1)
-                print(55555)
+                match = Neo4j()
+                data = match.findRelationByEntityAndRelation(entity=entity1,relation=relation)
+                if data:
+                    relation = []
+                    # 获取相关关系节点的节点名。
+                    n1 = []
+                    n2 = []
+                    for i in range(len(data)):
+                        di = {}
+                        dii = {}
+                        diii = {}
+                        for j in data[i]['n1']:
+                            di[j] = data[i]['n1'][j]
+                            di['labels'] = data[i]['labels(n1)'][0]
+                        for j in data[i]['n2']:
+                            dii[j] = data[i]['n2'][j]
+                            dii['labels'] = data[i]['labels(n2)'][0]
+                        n1.append(di)
+                        n2.append(dii)
+                        diii['source'] = data[i]['r'].start_node['name']
+                        diii['target'] = data[i]['r'].end_node['name']
+                        diii['name'] = list(set(data[i]['r'].types()))[0]
+                        relation.append(diii)
 
+                    sen = set()
+                    new_l = []
+                    n = n1 + n2
+                    for i in n:
+                        t = tuple(i.items())
+                        if not t in sen:
+                            sen.add(t)
+                            new_l.append(i)
+                    ent = []
+                    for i in new_l:
+                        d1 = {}
+                        d1['name'] = i['name']
+                        if 'detail' in i.keys():
+                            d1['des'] = i['detail']
+                        else:
+                            d1['des'] = ''
+                        if entity1 == i['name']:
+                            d1['symbolSize'] = 60
+                        else:
+                            d1['symbolSize'] = 30
+                        d1['itemStyle'] = {'normal': {'color': color[i['labels']]}}
+                        ent.append(d1)
+                    self.result = {
+                        'entity': ent,
+                        'relation': relation
+                    }
+                else:
+                    self.result = {}
             else:
                 entity2 = re.sub(s, '', entity2)
-                print(66666)
+                match = Neo4j()
+                data = match.findRelationByEntityAndRelation(entity=entity2,relation=relation)
+                if data:
+                    relation = []
+                    # 获取相关关系节点的节点名。
+                    n1 = []
+                    n2 = []
+                    for i in range(len(data)):
+                        di = {}
+                        dii = {}
+                        diii = {}
+                        for j in data[i]['n1']:
+                            di[j] = data[i]['n1'][j]
+                            di['labels'] = data[i]['labels(n1)'][0]
+                        for j in data[i]['n2']:
+                            dii[j] = data[i]['n2'][j]
+                            dii['labels'] = data[i]['labels(n2)'][0]
+                        n1.append(di)
+                        n2.append(dii)
+                        diii['source'] = data[i]['r'].start_node['name']
+                        diii['target'] = data[i]['r'].end_node['name']
+                        diii['name'] = list(set(data[i]['r'].types()))[0]
+                        relation.append(diii)
 
+                    sen = set()
+                    new_l = []
+                    n = n1 + n2
+                    for i in n:
+                        t = tuple(i.items())
+                        if not t in sen:
+                            sen.add(t)
+                            new_l.append(i)
+                    ent = []
+                    for i in new_l:
+                        d1 = {}
+                        d1['name'] = i['name']
+                        if 'detail' in i.keys():
+                            d1['des'] = i['detail']
+                        else:
+                            d1['des'] = ''
+                        if entity1 == i['name']:
+                            d1['symbolSize'] = 60
+                        else:
+                            d1['symbolSize'] = 30
+                        d1['itemStyle'] = {'normal': {'color': color[i['labels']]}}
+                        ent.append(d1)
+                    self.result = {
+                        'entity': ent,
+                        'relation': relation
+                    }
+                else:
+                    self.result = {}
 
         elif entity1 and entity2:
             entity1 = re.sub(s, '', entity1)
@@ -170,6 +271,3 @@ class RelationQueryApi(BaseApi):
         else:
             self.result = {}
         return self.result
-r = RelationQueryApi()
-b = r.push(entity1='易性病',entity2='青春期强迫症',relation='')
-print(b)

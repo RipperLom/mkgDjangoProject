@@ -7,6 +7,8 @@ from api.i_entity_recognition_origin import EntityRecognitionApi
 from api.i_entity_detail import EntityDetailyApi
 from api.i_mkg_classify import ClassifyApi
 
+import json
+
 # 初始化菜单
 menus = settings.MKG_MENU    # 菜单
 relas = settings.MKG_REL    # 关系
@@ -60,14 +62,24 @@ def relation_query(request):
     #   否则显示查询试题后的界面
     print('relation_query: ', request.GET)
     data = request.GET
+    print(data)
+    print('====>', data.get('entity1'))
     entity1 = data.get('entity1', '')
     entity2 = data.get('entity2', '')
     relation = data.get('relation', '')
+    print(settings.MKG_REL)
+    for i in settings.MKG_REL:
+        print(i, relation)
+        if i.get('name') == relation:
+            relation = i.get('en_name').upper()
+            break
+    print('data: ....', data)
     if len(entity1 + entity2 + relation):
-        result = RelationQueryApi().push(**data)
+        result = RelationQueryApi().push(entity1=entity1, entity2=entity2, relation=relation)
         isexist = True    # 判断是否存在相关结果, 默认需要False
         if result:
             isexist = True
+        print('result:=====>', result)
         return render(request, 'relation_query.html',  {'menus': menus, 'relas': relas, 'result': result, 'isexist': isexist})
     return render(request, 'relation_query.html',  {'menus': menus, 'relas': relas})
 
@@ -100,31 +112,34 @@ def detail(request):
         large_propreties: {'key':{'key': 'content', ...},...} ,
          error: '',
     }'''
-    result = {
-            'name': '标题',
-            'detail': '这里是内容',
-            'url': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558886937356&di=443322fe10034bc8be13e1438ccb924f&imgtype=0&src=http%3A%2F%2Fi1.bbs.fd.zol-img.com.cn%2Ft_s800x5000%2Fg5%2FM00%2F0B%2F0F%2FChMkJln10OuIHZh8AACJEEEqIzAAAhqsgBp1mIAAIko407.jpg',
-            'little_propreties': {'小标题1':{'中文名称': 'ADM公司', '组织形式': '个人独资'}, '小标题2':{'中文名称': 'ADM公司', '组织形式': '个人独资'}},
-            'large_propreties': {'大标题1':{'中文名称': 'ADM公司', '组织形式': '个人独资'}, '大标题2':{'中文名称': 'ADM公司', '组织形式': '个人独资'}} ,
-            'type': 'Pathogenic_Site',
-            'relation_name': ['中国科学研究院', '猪脑袋', '感冒1', '感冒2', '感冒3', ],
-            'error': ''
-        }
+    # result = {
+    #         'name': '标题',
+    #         'detail': '这里是内容',
+    #         'url': 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558886937356&di=443322fe10034bc8be13e1438ccb924f&imgtype=0&src=http%3A%2F%2Fi1.bbs.fd.zol-img.com.cn%2Ft_s800x5000%2Fg5%2FM00%2F0B%2F0F%2FChMkJln10OuIHZh8AACJEEEqIzAAAhqsgBp1mIAAIko407.jpg',
+    #         'little_propreties': {'小标题1':{'中文名称': 'ADM公司', '组织形式': '个人独资'}, '小标题2':{'中文名称': 'ADM公司', '组织形式': '个人独资'}},
+    #         'large_propreties': {'大标题1':{'中文名称': 'ADM公司', '组织形式': '个人独资'}, '大标题2':{'中文名称': 'ADM公司', '组织形式': '个人独资'}} ,
+    #         'type': 'Pathogenic_Site',
+    #         'relation_name': ['中国科学研究院', '猪脑袋', '感冒1', '感冒2', '感冒3', ],
+    #         'error': ''
+    #     }
 
-    # data = request.GET
-    # entity = data.get('entity', '')
-    # if entity:
-    #     result = EntityDetailyApi().push()
-    #
-    #     # 先判断 error
-    #     error = result.get('error', '')
-    #     if not error:
-    #         return  render(request, 'detail.html', {'menus': menus})
-    # return redirect('/')
-    mkg_entype = settings.MKG_ENTYPE
-    result['entype'] = mkg_entype.get(result.get('type', ''), '')
-    print(result)
-    return render(request, 'detail.html', {'menus': menus, 'result': result})
+    data = request.GET
+    entity = data.get('entity', '')
+    print('view_entity: ', entity)
+    if entity:
+        result = EntityDetailyApi().push(**data)
+        print('....result: ', result)
+
+        # 先判断 error
+        error = result.get('error', '')
+        if error:
+            return  render(request, 'detail.html', {'menus': menus})
+        mkg_entype = settings.MKG_ENTYPE
+        print('type:', result.get('type', ''))
+        result['entype'] = mkg_entype.get(result.get('type', ''), '')
+        print(result)
+        return render(request, 'detail.html', {'menus': menus, 'result': result})
+    return render(request, 'detail.html', {'menus': menus})
 
 
 def createNodes(nodes, tree_content):
