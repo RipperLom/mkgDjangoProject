@@ -26,11 +26,7 @@ class Neo4j():
         # sql = "match p= shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) return p;"
         sql = "MATCH p=shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) RETURN r"
         answer = self.graph.run(sql).data()
-<<<<<<< HEAD
         print(answer[0].get('r'))
-=======
-        print(answer[0]['r'])
->>>>>>> ec57861a65e8860993d9fa0094690d558f5e0c7a
         relationDict = []
         if (answer is not None):
             for x in answer[0].get('r'):
