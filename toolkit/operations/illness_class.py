@@ -6,6 +6,7 @@ __author__ = 'DongHao'
 
 import json
 import csv
+import os
 
 # 构建建立三元组的类
 class Triad(object):
@@ -14,7 +15,7 @@ class Triad(object):
         with open(filepath1, 'r', encoding='utf-8') as fr:
             with open(filepath2, 'a', newline='', encoding='utf-8') as fw:
                 csv_writer = csv.writer(fw, dialect='excel')
-                csv_writer.writerow(['illness_name', 'same_name', 'illness_name'])
+                csv_writer.writerow(['illness_name', 'same_name', 'illness2_name'])
                 datas = json.load(fr)
                 for data in datas:
                     if data['another_names'][0] != '':
@@ -153,5 +154,18 @@ class Triad(object):
                             strs = str(data['illness_name']) + '%%' + 'Treatment_of_department' + '%%' + str(i)
                             csv_writer.writerow(strs.split('%%'))
 
+file_path =  os.path.dirname( os.path.dirname(os.path.dirname(__file__)))
+path_join = os.path.join(file_path, 'data', 'cvsOrTxtFiles')
+
 if __name__ == "__main__":
     triad = Triad()
+    filepath1 = path_join+'\\jkw_39_illness.json'
+    triad.getIllnessAnotherNames(filepath1, path_join+'\\illness_another_names.csv')
+    triad.gitIllnessClassicalSymptom(filepath1, path_join+'\\illness_classical_symptom.csv')
+    triad.getIllnessComplication(filepath1, path_join+'\\illness_complication.csv')
+    triad.getIllnessExamination(filepath1, path_join+'\\illness_examination.csv')
+    triad.getIllnessPathogenicSite(filepath1, path_join+'\\illness_pathogenic_site.csv')
+    triad.getIllnessRegularMedication(filepath1, path_join+'\\illness_regular_medication.csv')
+    triad.getIllnessSurgeriesName(path_join+'\\jkw_39_surgeries.json', path_join+'\\illness_surgeries_name.csv')
+    triad.getIllnessTreatmentOfDepartment(filepath1, path_join+'\\illness_Treatment_of_department.csv')
+

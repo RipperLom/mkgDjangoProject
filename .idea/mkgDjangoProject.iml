@@ -16,7 +16,15 @@
       <excludeFolder url="file://$MODULE_DIR$/enve" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
+<<<<<<< HEAD
     <orderEntry type="jdk" jdkName="Python 3.6 (mkgDjangoProject)" jdkType="Python SDK" />
+=======
+<<<<<<< HEAD
+    <orderEntry type="jdk" jdkName="Python 3.6" jdkType="Python SDK" />
+=======
+    <orderEntry type="jdk" jdkName="Python 3.6 (mkgDjangoProject)" jdkType="Python SDK" />
+>>>>>>> fccabb50508d774a2ec6ddd25cb36dbfb3d95c75
+>>>>>>> ec57861a65e8860993d9fa0094690d558f5e0c7a
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

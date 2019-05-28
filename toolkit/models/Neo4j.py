@@ -26,7 +26,11 @@ class Neo4j():
         # sql = "match p= shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) return p;"
         sql = "MATCH p=shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) RETURN r"
         answer = self.graph.run(sql).data()
+<<<<<<< HEAD
         print(answer[0].get('r'))
+=======
+        print(answer[0]['r'])
+>>>>>>> ec57861a65e8860993d9fa0094690d558f5e0c7a
         relationDict = []
         if (answer is not None):
             for x in answer[0].get('r'):
@@ -89,7 +93,7 @@ class Neo4j():
                 onemesg = msg[i].strip().split(',')
                 sql ='MATCH (n:'+entity1label+'{name:"'+onemesg[0]+'"}),(m:'+entity2label+'{name:"'+onemesg[2].strip().replace('\\','').replace('"','')+'"}) CREATE (n)-[r:'+relationname+'{type:"'+onemesg[1]+'"}]->(m) RETURN r'
                 self.graph.run(sql)
-                print(relationname + '导入完成比例：{:.2f}%'.format((i / len(msg)) * 100))
+                print(relationname + '导入完成比例：{:.2f}%'.format(((i+1) / len(msg)) * 100))
             # MATCH(entity1: Disease
             # {name: line.illness_name}), (entity2:Symptom{name:line.symptom_name})
             # CREATE(entity1) - [r: HAS_SYMPTOM
