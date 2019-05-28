@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.6" project-jdk-type="Python SDK" />
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.6 (mkgDjangoProject)" project-jdk-type="Python SDK" />
+>>>>>>> fccabb50508d774a2ec6ddd25cb36dbfb3d95c75
 </project>
