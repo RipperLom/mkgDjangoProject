@@ -6,6 +6,7 @@
 1、实体识别
 
 API  参数： text
+
 http://127.0.0.1:8000/entity_recognition/?text=病名&api=true
 输出格式：[{'name': str, 'tag': str, 'exist': bool}, ...]
 
