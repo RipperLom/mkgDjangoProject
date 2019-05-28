@@ -11,7 +11,7 @@ class EntityQueryApi(BaseApi):
         # in: entity : str
         # out: (1) 如果数据库没有此实体，请返回 {}
         #      (2) 如果有数据，返回格式：
-        #self.result = {
+        # self.result = {
         # 'entity': [ {
         #         name: '名称',
         #         des: '详细简略信息，<字数控制在60字左右>',
