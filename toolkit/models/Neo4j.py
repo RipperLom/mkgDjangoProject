@@ -25,17 +25,17 @@ class Neo4j():
         # MATCH p = shortestpath((a{name:'嗜睡'}) - [*1..] - (b{name:'脑脓肿'})) RETURN p
         # sql = "match p= shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) return p;"
         sql = "MATCH p=shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) RETURN r"
-        answer = self.graph.run(sql).evaluate()
+        answer = self.graph.run(sql).data()
 
         relationDict = []
         if (answer is not None):
-            for x in answer:
+            for x in answe[0]['r']:
                 tmp = {}
                 start_node = x.start_node()
                 end_node = x.end_node()
                 tmp['n1'] = start_node
                 tmp['n2'] = end_node
-                tmp['rel'] = str(x).replace(':', " ").split(" ")[1]
+                tmp['rel'] = list(set(x.types()))[0]
                 relationDict.append(tmp)
         return relationDict
 
@@ -108,6 +108,6 @@ if __name__ == '__main__':
     # model.createNode('illness_name.csv','Disease')
     # print(model.findRelationByEntityAndRelation('现代病','心理咨询','BELONG_TO'))
     # model.createRelation('illness_another_names.csv', 'Disease', 'Disease', 'Alias')
-    for i in model.matchByName('脑脓肿'):
-        print(i)
+    # for i in model.matchByName('脑脓肿'):
+    #     print(i)
 
