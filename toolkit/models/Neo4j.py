@@ -16,7 +16,7 @@ class Neo4j():
     print(type(ss[0]['n']['cost']))    <class 'str'>
     '''
     def matchByName(self,value):
-        sql = "MATCH (n1 { name: '" + str(value) + "' })-[r]-(n2) return n1,labels(n1),r,n2,labels(n2);"
+        sql = "MATCH (n1 { name: '" + str(value) + "' })-[r]-(n2) return n1,labels(n1),r,n2,labels(n2) LIMIT 50"
         answer = self.graph.run(sql).data()
         return answer
 
@@ -24,12 +24,12 @@ class Neo4j():
     def findRelationByEntity(self,entity1, entity2):
         # MATCH p = shortestpath((a{name:'嗜睡'}) - [*1..] - (b{name:'脑脓肿'})) RETURN p
         # sql = "match p= shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) return p;"
-        sql = "MATCH p=shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) RETURN r"
+        sql = "MATCH p=shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) RETURN r LIMIT 50"
         answer = self.graph.run(sql).data()
         print(answer[0].get('r'))
         relationDict = []
         if (answer is not None):
-            for x in answer[0].get('r'):
+            for x in answer[0]['r']:
                 tmp = {}
                 start_node = x.start_node
                 end_node = x.end_node
@@ -41,12 +41,12 @@ class Neo4j():
 
     #查找指定的两个实体和关系
     def findRelationByEntitiesAndRelation(self,entity1, entity2,relation):
-        sql = "match (n1{name:'" + entity1 + "'})-[r:" + relation + "]-(n2{name:'" + entity2 + "'}) return n1,labels(n1),r,n2,labels(n2)"
+        sql = "match (n1{name:'" + entity1 + "'})-[r:" + relation + "]-(n2{name:'" + entity2 + "'}) return n1,labels(n1),r,n2,labels(n2) LIMIT 50"
         answer = self.graph.run(sql).data()
         return answer
     #查找指定的一个实体和关系
     def findRelationByEntityAndRelation(self,entity,relation):
-        sql = "match (n1{name:'" + entity + "'})-[r:"+relation+"]-(n2) return n1,labels(n1),r,n2,labels(n2)"
+        sql = "match (n1{name:'" + entity + "'})-[r:"+relation+"]-(n2) return n1,labels(n1),r,n2,labels(n2) LIMIT 50"
         answer = self.graph.run(sql).data()
         return answer
     #添加节点到graph中
