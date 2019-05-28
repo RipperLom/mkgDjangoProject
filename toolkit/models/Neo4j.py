@@ -29,7 +29,7 @@ class Neo4j():
 
         relationDict = []
         if (answer is not None):
-            for x in answe[0]['r']:
+            for x in answer[0]['r']:
                 tmp = {}
                 start_node = x.start_node()
                 end_node = x.end_node()
