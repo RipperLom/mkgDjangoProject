@@ -63,7 +63,7 @@ def entity_query(request):
     print('entity_query: ', request.GET)
     data = request.GET
 
-    if data.get('api', '') == 'true':
+    if data.get('api', '') == 'true' and data.get('entity', ''):
         # API请求格式：entity   api=true
         # http://127.0.0.1:8000/entity_query/?api=true&entity=感冒
         print('entity:===> ', data.get('entity'))

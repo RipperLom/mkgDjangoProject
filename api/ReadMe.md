@@ -40,7 +40,7 @@ http://127.0.0.1:8000/entity_query/?api=true&entity=感冒
 3、关系查询
 
 API, 请求参数： entity1, entity2, relation, api=true
-http://127.0.0.1:8000/entity_query/?api=true&entity1=实体一&entity2=实体二&relation=关系名
+http://127.0.0.1:8000/relation_query/?api=true&entity1=实体一&entity2=实体二&relation=关系名
 输出格式：
 
         # out: (1) 如果数据库没有此实体，请返回 {}
