@@ -30,10 +30,28 @@ def entity_recognition(request):
         data = request.POST
         text = data.get('text', '')
         print('text:', text)     # test 110
+
+
         if text:
             result = EntityRecognitionApi().push(text=text)    # [{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]
             print('result: ', result)
+
             return render(request, 'entity_recognition.html', {'menus': menus, 'grams': grams, 'result': result})
+    else:
+        print('entity_recognition: ', request.GET)
+        data = request.GET
+        text = data.get('text', '')
+        print('text:', text)  # test 110
+
+        if data.get('api') == 'true':
+            # API  参数： text
+            # http://127.0.0.1:8000/entity_recognition/?text=%E4%B8%AD%E5%9B%BD%E4%BA%BA&api=true
+            if text:
+                result = EntityRecognitionApi().push(
+                    text=text)  # [{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]
+                print('result: ', result)
+                return HttpResponse(json.dumps(result, ensure_ascii=False))
+            return HttpResponse(json.dumps({'error': '请输入识别文本'}, ensure_ascii=False))
 
     return render(request, 'entity_recognition.html', {'menus': menus})
 
@@ -44,9 +62,24 @@ def entity_query(request):
     #   否则显示查询实体后的界面
     print('entity_query: ', request.GET)
     data = request.GET
+
+    if data.get('api', '') == 'true':
+        # API请求格式：entity   api=true
+        # http://127.0.0.1:8000/entity_query/?api=true&entity=感冒
+        print('entity:===> ', data.get('entity'))
+        entity = data.get('entity')
+        result = EntityQueryApi().push(entity=entity)
+        isexist = False  # 判断是否存在相关实体, 默认需要False
+        if result:
+            isexist = True
+        else:
+            return HttpResponse(json.dumps({'error': '404'}, ensure_ascii=False))
+        return HttpResponse(json.dumps(result, ensure_ascii=False))
+
     entity = data.get('entity', '')
     if entity:
-        result = EntityQueryApi().push(**data)
+        entity = data.get('entity')
+        result = EntityQueryApi().push(entity=entity)
         isexist = False     # 判断是否存在相关实体, 默认需要False
         if result:
             isexist = True
@@ -76,11 +109,25 @@ def relation_query(request):
     print('data: ....', data)
     if len(entity1 + entity2 + relation):
         result = RelationQueryApi().push(entity1=entity1, entity2=entity2, relation=relation)
-        isexist = True    # 判断是否存在相关结果, 默认需要False
+        isexist = False    # 判断是否存在相关结果, 默认需要False
         if result:
             isexist = True
         print('result:=====>', result)
+
+        if data.get('api', '') == 'true':
+            # API, 请求参数： entity1, entity2, relation, api=true
+            # http://127.0.0.1:8000/entity_query/?api=true&entity1=%E6%84%9F%E5%86%92&entity2=%E5%86%85%E7%A7%91&relation=
+            if isexist == False:
+                return HttpResponse(json.dumps({'error': '404'}, ensure_ascii=False))
+            return HttpResponse(json.dumps(result))
+
         return render(request, 'relation_query.html',  {'menus': menus, 'relas': relas, 'result': result, 'isexist': isexist})
+
+    if data.get('api', '') == 'true':
+        # API, 请求参数： entity1, entity2, relation, api=true
+        # http://127.0.0.1:8000/entity_query/?api=true&entity1=%E6%84%9F%E5%86%92&entity2=%E5%86%85%E7%A7%91&relation=
+        return HttpResponse(json.dumps({'error': '请输入相关实体和关系'}, ensure_ascii=False))
+
     return render(request, 'relation_query.html',  {'menus': menus, 'relas': relas})
 
 
@@ -127,8 +174,13 @@ def detail(request):
     entity = data.get('entity', '')
     print('view_entity: ', entity)
     if entity:
-        result = EntityDetailyApi().push(**data)
+        result = EntityDetailyApi().push(entity=entity)
         print('....result: ', result)
+
+        if data.get('api', '') == 'true':
+            # API: 参数： entity, api=true
+            # http://127.0.0.1:8000/detail/?entity=%E6%84%9F%E5%86%92&api=true
+            return HttpResponse(json.dumps(result, ensure_ascii=False))
 
         # 先判断 error
         error = result.get('error', '')
@@ -138,7 +190,15 @@ def detail(request):
         print('type:', result.get('type', ''))
         result['entype'] = mkg_entype.get(result.get('type', ''), '')
         print(result)
+
+
         return render(request, 'detail.html', {'menus': menus, 'result': result})
+
+    if data.get('api', '') == 'true':
+        # API: 参数： entity, api=true
+        # http://127.0.0.1:8000/detail/?entity=%E6%84%9F%E5%86%92&api=true
+        return HttpResponse(json.dumps({'error': '请输入实体'}, ensure_ascii=False))
+
     return render(request, 'detail.html', {'menus': menus})
 
 

@@ -24,7 +24,7 @@ class EntityDetailyApi(BaseApi):
         #  error: ''
         # }
         #对输入查询数据名称进行正则化
-        entity = kwargs.get('entity', [''])[0]
+        entity = kwargs.get('entity', '')
         print('entity: ', entity)
         s = r"[\\\'\"\“\”\‘\’\s\:\、\。\,\.\，\;\·\！\@\#\￥\%\……\&\*\（\）\{\}\【\】\$\/\|\(\)\~\：\；\^\?\？\<\>\《\》\-\+\=\。。。\——]*"
         entity = re.sub(s,'',entity)
