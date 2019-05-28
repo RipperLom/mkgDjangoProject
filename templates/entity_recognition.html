@@ -49,7 +49,7 @@
                             <h5>
                             {% for word in result %}<!--
                              -->{% if word.exist %}<!--
-                                    --><a href="/entity_query?text={{ word.name }}">{{ word.name }}</a><!--
+                                    --><a href="/detail?text={{ word.name }}" data-original-title="{{ word.name }}" data-placement="top" data-trigger="hover" data-content="点击查看详细介绍" class="popovers">{{ word.name }}</a><!--
                                 -->{% else %}<!--
                                     -->{{ word.name }}<!--
                                 -->{% endif %}<!--

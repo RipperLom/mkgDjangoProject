@@ -5,6 +5,7 @@ from api.i_entity_query import EntityQueryApi
 from api.i_relation_query import RelationQueryApi
 from api.i_entity_recognition_origin import EntityRecognitionApi
 from api.i_entity_detail import EntityDetailyApi
+from api.i_mkg_classify import ClassifyApi
 
 # 初始化菜单
 menus = settings.MKG_MENU    # 菜单
@@ -80,7 +81,12 @@ def robot_conversion(request):
 #  医学知识概览
 def mkg_classify(request):
     # handle data
-    return render(request, 'mkg_classify.html',  {'menus': menus})
+    data = request.GET
+    classify_name = data.get('query', '')
+    result = ClassifyApi().push(**data)
+    import json
+    print(json.dumps(result, ensure_ascii=False))
+    return render(request, 'mkg_classify.html', {'menus': menus, 'result': json.dumps(result, ensure_ascii=False)})
 
 
 # 详细信息查询
@@ -119,3 +125,44 @@ def detail(request):
     result['entype'] = mkg_entype.get(result.get('type', ''), '')
     print(result)
     return render(request, 'detail.html', {'menus': menus, 'result': result})
+
+
+def createNodes(nodes, tree_content):
+    tree_content += '<ul>'
+    if type(nodes) == list:
+        for node in nodes:
+            tree_content += '<li class="parent_li">'
+            tree_content += '<span title="Collapse this branch"><i class="fa fa-minus-square" aria-hidden="true"></i>&nbsp;'+ node.get('text', '==') +'</span>'
+            tree_content += '<a href="">&nbsp;&nbsp;[进入分类]</a>'
+
+
+
+
+if __name__ == '__main__':
+    object = {
+        'text': '一级目录',
+        'nodes': [
+            {
+                'text': '二级目录',
+                'nodes': [
+                    {
+                        'text': '三级目录',
+                        'nodes': None
+                    },
+                    {
+                        'text': '三级目录',
+                        'nodes': None
+                    }
+                ]},
+            {
+                'text': '二级目录',
+                'nodes': [
+                    {
+                        'text': '三级目录',
+                        'nodes': None
+                    }
+                ]}
+        ]
+    }
+    tree_content = ""
+    createNodes(object, tree_content)
