@@ -96,7 +96,20 @@
                         关系列表 :
                     </header>
                     <div class="panel-body">
-                        <table class="table" data-paging="true" data-sorting="true"></table>
+                        <table class="table" data-paging="true" data-sorting="true">
+                            <th>
+                                <td>实体一</td>
+                                <td>关系</td>
+                                <td>实体二</td>
+                            </th>
+                            {% for r in result.relation %}
+                                <tr>
+                                    <td>{{ r.source }}</td>
+                                    <td>{{ r.relation }}</td>
+                                    <td>{{ r.target }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
                     </div>
                 </div>
             </div>
