@@ -159,13 +159,13 @@ path_join = os.path.join(file_path, 'data', 'cvsOrTxtFiles')
 
 if __name__ == "__main__":
     triad = Triad()
-    # filepath1 = path_join+'\\jkw_39_illness.json'
-    # triad.getIllnessAnotherNames(filepath1, path_join+'\\illness_another_names.csv')
-    # triad.gitIllnessClassicalSymptom(filepath1, path_join+'\\illness_classical_symptom.csv')
-    # triad.getIllnessComplication(filepath1, path_join+'\\illness_complication.csv')
-    # triad.getIllnessExamination(filepath1, path_join+'\\illness_examination.csv')
-    # triad.getIllnessPathogenicSite(filepath1, path_join+'\\illness_pathogenic_site.csv')
-    # triad.getIllnessRegularMedication(filepath1, path_join+'\\illness_regular_medication.csv')
-    # triad.getIllnessSurgeriesName(path_join+'\\jkw_39_surgeries.json', path_join+'\\illness_surgeries_name.csv')
-    # triad.getIllnessTreatmentOfDepartment(filepath1, path_join+'\\illness_Treatment_of_department.csv')
+    filepath1 = path_join+'\\jkw_39_illness.json'
+    triad.getIllnessAnotherNames(filepath1, path_join+'\\illness_another_names.csv')
+    triad.gitIllnessClassicalSymptom(filepath1, path_join+'\\illness_classical_symptom.csv')
+    triad.getIllnessComplication(filepath1, path_join+'\\illness_complication.csv')
+    triad.getIllnessExamination(filepath1, path_join+'\\illness_examination.csv')
+    triad.getIllnessPathogenicSite(filepath1, path_join+'\\illness_pathogenic_site.csv')
+    triad.getIllnessRegularMedication(filepath1, path_join+'\\illness_regular_medication.csv')
+    triad.getIllnessSurgeriesName(path_join+'\\jkw_39_surgeries.json', path_join+'\\illness_surgeries_name.csv')
+    triad.getIllnessTreatmentOfDepartment(filepath1, path_join+'\\illness_Treatment_of_department.csv')
 
