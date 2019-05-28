@@ -24,7 +24,7 @@ class EntityDetailyApi(BaseApi):
         #  error: ''
         # }
         #对输入查询数据名称进行正则化
-        entity = kwargs.get('entity', [''])[0]
+        entity = kwargs.get('entity', '')
         s = r"[\\\'\"\“\”\‘\’\s\:\、\。\,\.\，\;\·\！\@\#\￥\%\……\&\*\（\）\{\}\【\】\$\/\|\(\)\~\：\；\^\?\？\<\>\《\》\-\+\=\。。。\——]*"
         entity = re.sub(s,'',entity)
         match = Neo4j()
@@ -56,12 +56,15 @@ class EntityDetailyApi(BaseApi):
             else:
                 dI = new_l[0]
             if 'info_match' in dI.keys():
-                info_match_str = str.replace(dI['info_match'], "'", '"')
-                info_match_dict = json.loads(info_match_str)
-                # 删除'info_match'字典中值为空的键值对
-                for key in list(info_match_dict.keys()):
-                    if not info_match_dict.get(key):
-                        info_match_dict.pop(key)
+                if dI['info_match']:
+                    info_match_str = str.replace(dI['info_match'], "'", '"')
+                    info_match_dict = json.loads(info_match_str)
+                    # 删除'info_match'字典中值为空的键值对
+                    for key in list(info_match_dict.keys()):
+                        if not info_match_dict.get(key):
+                            info_match_dict.pop(key)
+                else:
+                    info_match_dict = ''
             else:
                 info_match_dict = ''
 
@@ -89,7 +92,7 @@ class EntityDetailyApi(BaseApi):
                 'url':img,
                 'little_propreties':info_match_dict,
                 'type': data[0]['labels(n1)'][0],
-                'relation_name':rel_na,
+                'relation_name':rel_na[:10],
                 'error':''
             }
         else:
@@ -102,6 +105,3 @@ class EntityDetailyApi(BaseApi):
                 'error':'实体不存在！！！',
             }
         return self.result
-a = EntityDetailyApi()
-b = a.push(entity=['口炎'])
-print(b)
