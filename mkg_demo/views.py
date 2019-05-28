@@ -7,6 +7,8 @@ from api.i_entity_recognition_origin import EntityRecognitionApi
 from api.i_entity_detail import EntityDetailyApi
 from api.i_mkg_classify import ClassifyApi
 
+import json
+
 # 初始化菜单
 menus = settings.MKG_MENU    # 菜单
 relas = settings.MKG_REL    # 关系
@@ -30,8 +32,11 @@ def entity_recognition(request):
         print('text:', text)     # test 110
         if text:
             result = EntityRecognitionApi().push(text=text)    # [{'name': str, 'tag': str, 'grammar': '', 'exist': bool}, ...]
+            if data.get('api') == 'true':
+                return HttpResponse(json.dumps(result))
             print('result: ', result)
             return render(request, 'entity_recognition.html', {'menus': menus, 'grams': grams, 'result': result})
+
 
     return render(request, 'entity_recognition.html', {'menus': menus})
 
@@ -81,12 +86,20 @@ def robot_conversion(request):
 #  医学知识概览
 def mkg_classify(request):
     # handle data
-    data = request.GET
-    classify_name = data.get('query', '')
-    result = ClassifyApi().push(**data)
-    import json
-    print(json.dumps(result, ensure_ascii=False))
-    return render(request, 'mkg_classify.html', {'menus': menus, 'result': json.dumps(result, ensure_ascii=False)})
+    # if request.method == 'GET':
+    #     print('request.GET: ', request.GET)
+    #     # data = request.GET
+    #     # classify_name = data.get('query', '')
+    #     # result = ClassifyApi().push(**data)
+    #     # import json
+    #     # print(json.dumps(result, ensure_ascii=False))
+    #     return render(request, 'mkg_classify.html', {'menus': menus})
+    # else:
+    #     print('request.POST: ', request.POST)
+    #     result = ClassifyApi().push(**request.POST)
+    #     print(json.dumps(result, ensure_ascii=False))
+    #     return HttpResponse(json.dumps(result, ensure_ascii=False))
+    return render(request, 'mkg_classify.html', {'menus': menus})
 
 
 # 详细信息查询

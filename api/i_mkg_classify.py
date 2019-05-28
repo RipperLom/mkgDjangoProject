@@ -9,7 +9,7 @@ class ClassifyApi(BaseApi):
         self.relation = settings.RELATION
 
     def get_result(self, relation, currentnode):
-        nodes_text = relation.get(currentnode.get('text'))
+        nodes_text = relation.get(currentnode.get('text'), '')
         if nodes_text:
             for node in nodes_text:
                 if not currentnode.get('nodes'):
@@ -23,8 +23,9 @@ class ClassifyApi(BaseApi):
         # send data to Invoker
         # in: query : str
         # out: []
-        query = kwargs.get('query', '')
-        if not query:
+        print(kwargs)
+        query = kwargs.get('query', [''])
+        if query == ['']:
             query = '科室'
         query = {'text': query}
         self.result = self.get_result(self.relation, query)
