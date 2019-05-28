@@ -20,7 +20,75 @@ class EntityRecognitionApi(BaseApi):
         # else:
         #     pass
 
-    def get_explain(self, s):
+    # def get_explain(self, s):
+    #     if s == 1:
+    #         return '人物'
+    #     if s == 2:
+    #         return '地点'
+    #     if s == 3:
+    #         return r'机构'
+    #     if s == 4:
+    #         return '政治经济名词'
+    #     if s == 5:
+    #         return '动物学名词'
+    #     if s == 6:
+    #         return '植物学名词'
+    #     if s == 7:
+    #         return '化学名词'
+    #     if s == 8:
+    #         return '季节气候'
+    #     if s == 9:
+    #         return '动植物产品'
+    #     if s == 10:
+    #         return '动植物疾病'
+    #     if s == 11:
+    #         return '自然灾害'
+    #     if s == 12:
+    #         return '营养成分'
+    #     if s == 13:
+    #         return '生物学名词'
+    #     if s == 14:
+    #         return '农机具'
+    #     if s == 15:
+    #         return '农业技术术语'
+    #     if s == 16:
+    #         return '其它实体'
+    #
+    #     if s == 21:
+    #         return '科室'
+    #     if s == 22:
+    #         return '疾病'
+    #     if s == 23:
+    #         return '症状'
+    #     if s == 24:
+    #         return '药物'
+    #     if s == 25:
+    #         return '部位'
+    #     if s == 26:
+    #         return '检测项目'
+    #     if s == 27:
+    #         return '手术'
+    #
+    #     if s == 'np':
+    #         return '人物'
+    #     if s == 'ns':
+    #         return '地点'
+    #     if s == 'ni':
+    #         return '机构'
+    #     if s == 'nz':
+    #         return '专业名词'
+    #     if s == 'i' or s == 'id':
+    #         return '习语'
+    #     # if s == 'j':
+    #     #     return '简称'
+    #     # if s == 'x':
+    #     #     return '其它'
+    #     if s == 't':
+    #         return '时间日期'
+    #
+    #     return '非实体'
+
+    def get_explain(s):
         if s == 1:
             return '人物'
         if s == 2:
@@ -53,21 +121,20 @@ class EntityRecognitionApi(BaseApi):
             return '农业技术术语'
         if s == 16:
             return '其它实体'
-
         if s == 21:
             return '科室'
         if s == 22:
-            return '疾病'
+            return '发病部位'
         if s == 23:
             return '症状'
         if s == 24:
-            return '药物'
-        if s == 25:
-            return '部位'
-        if s == 26:
-            return '检测项目'
-        if s == 27:
             return '手术'
+        if s == 25:
+            return '检测项目'
+        if s == 26:
+            return '药品'
+        if s == 27:
+            return '疾病'
 
         if s == 'np':
             return '人物'
@@ -79,8 +146,8 @@ class EntityRecognitionApi(BaseApi):
             return '专业名词'
         if s == 'i' or s == 'id':
             return '习语'
-        # if s == 'j':
-        #     return '简称'
+        if s == 'j':
+            return '简称'
         # if s == 'x':
         #     return '其它'
         if s == 't':
@@ -127,7 +194,7 @@ class EntityRecognitionApi(BaseApi):
             for row in reader:
                 predict_labels[str(row[0])] = int(row[1])
 
-        with open(os.path.join(FILE_DIR, 'data/djangoWashedFiles/totalEntities.txt'), 'r', encoding="utf-8") as csvfile:
+        with open(os.path.join(FILE_DIR, 'data/djangoWashedFiles/total_entity.txt'), 'r', encoding="utf-8") as csvfile:
             reader = csv.reader(csvfile, delimiter=' ')
             for row in reader:
                 try:
