@@ -13,7 +13,11 @@ http://127.0.0.1:8000/entity_recognition/?text=病名&api=true
 2、实体查询
 
 API请求格式：entity   api=true
+<<<<<<< HEAD
 http://127.0.0.1:8000/entity_query  /?api=true&entity=感冒
+=======
+http://127.0.0.1:8000/entity_query/?api=true&entity=感冒
+>>>>>>> eb0685dfdfba121cbe3a888ebae2936904a278f1
 输出格式：
 
         # out: (1) 如果数据库没有此实体，请返回 {}

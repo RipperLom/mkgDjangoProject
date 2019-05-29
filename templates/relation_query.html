@@ -97,6 +97,7 @@
                     </header>
                     <div class="panel-body">
                         <table class="table" data-paging="true" data-sorting="true">
+<<<<<<< HEAD
                             <tr>
                                 <th>实体一</th>
                                 <th>关系</th>
@@ -106,6 +107,17 @@
                                 <tr>
                                     <td>{{ r.source }}</td>
                                     <td>{{ r.name }}</td>
+=======
+                            <th>
+                                <td>实体一</td>
+                                <td>关系</td>
+                                <td>实体二</td>
+                            </th>
+                            {% for r in result.relation %}
+                                <tr>
+                                    <td>{{ r.source }}</td>
+                                    <td>{{ r.relation }}</td>
+>>>>>>> eb0685dfdfba121cbe3a888ebae2936904a278f1
                                     <td>{{ r.target }}</td>
                                 </tr>
                             {% endfor %}
