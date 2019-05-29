@@ -88,7 +88,11 @@ class EntityRecognitionApi(BaseApi):
     #
     #     return '非实体'
 
+<<<<<<< HEAD
     def get_explain(self, s):
+=======
+    def get_explain(s):
+>>>>>>> eb0685dfdfba121cbe3a888ebae2936904a278f1
         if s == 1:
             return '人物'
         if s == 2:
@@ -194,10 +198,15 @@ class EntityRecognitionApi(BaseApi):
             for row in reader:
                 predict_labels[str(row[0])] = int(row[1])
 
+<<<<<<< HEAD
         # with open(os.path.join(FILE_DIR, 'data/djangoWashedFiles/totalEntities.txt'), 'r', encoding="utf-8") as csvfile:
         with open(os.path.join(FILE_DIR, 'data/djangoWashedFiles/total_entity.txt'), 'r', encoding="utf-8") as csvfile:
             # reader = csv.reader(csvfile, delimiter=' ')
             reader = csvfile.readlines()
+=======
+        with open(os.path.join(FILE_DIR, 'data/djangoWashedFiles/total_entity.txt'), 'r', encoding="utf-8") as csvfile:
+            reader = csv.reader(csvfile, delimiter=' ')
+>>>>>>> eb0685dfdfba121cbe3a888ebae2936904a278f1
             for row in reader:
                 row = row.split('##')
                 try:

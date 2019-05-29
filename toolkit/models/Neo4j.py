@@ -17,7 +17,10 @@ class Neo4j():
     '''
     def matchByName(self,value):
         sql = "MATCH (n1 { name: '" + str(value) + "' })-[r]-(n2) return n1,labels(n1),r,n2,labels(n2) LIMIT 50"
+<<<<<<< HEAD
         print('cql: ', sql)
+=======
+>>>>>>> eb0685dfdfba121cbe3a888ebae2936904a278f1
         answer = self.graph.run(sql).data()
         return answer
 

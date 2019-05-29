@@ -39,6 +39,7 @@ class EntityQueryApi(BaseApi):
         entity = re.sub(s,'',entity)
         match = Neo4j()
         data = match.matchByName(entity)
+<<<<<<< HEAD
         """
         {'n1': (e16ba23:Department {name:"外科"}), 
         'labels(n1)': ['Department'],
@@ -50,6 +51,8 @@ class EntityQueryApi(BaseApi):
                     name:"头皮及颅骨烧伤"}), 
          'labels(n2)': ['Disease']}
         """
+=======
+>>>>>>> eb0685dfdfba121cbe3a888ebae2936904a278f1
         if data:
             relation = []
             #获取相关关系节点的节点名。
@@ -67,7 +70,10 @@ class EntityQueryApi(BaseApi):
                     dii['labels'] = data[i]['labels(n2)'][0]
                 n1.append(di)
                 n2.append(dii)
+<<<<<<< HEAD
                 print(data[i]['r'].start_node)
+=======
+>>>>>>> eb0685dfdfba121cbe3a888ebae2936904a278f1
                 diii['source'] = data[i]['r'].start_node['name']
                 diii['target'] = data[i]['r'].end_node['name']
                 diii['name'] = list(set(data[i]['r'].types()))[0]
@@ -102,5 +108,8 @@ class EntityQueryApi(BaseApi):
         else:
             self.result = {}
         return self.result
+<<<<<<< HEAD
 
 EntityQueryApi().push(entity='感冒')
+=======
+>>>>>>> eb0685dfdfba121cbe3a888ebae2936904a278f1
