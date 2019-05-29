@@ -77,15 +77,15 @@
                         </header>
                         <div class="panel-body">
                             <table class="table" data-paging="true" data-sorting="true">
-                                <th>
-                                    <td>实体一</td>
-                                    <td>关系</td>
-                                    <td>实体二</td>
-                                </th>
+                                <tr>
+                                    <th>实体一</th>
+                                    <th>关系</th>
+                                    <th>实体二</th>
+                                </tr>
                                 {% for r in result.relation %}
                                     <tr>
                                         <td>{{ r.source }}</td>
-                                        <td>{{ r.relation }}</td>
+                                        <td>{{ r.name }}</td>
                                         <td>{{ r.target }}</td>
                                     </tr>
                                 {% endfor %}
@@ -110,20 +110,20 @@
                     {
                         type: 'graph',
                         layout: 'force',
-                        symbolSize: 30,
+                        symbolSize: 50,
                         roam: true,
                         edgeSymbol: ['circle', 'arrow'],
                         edgeSymbolSize: [4, 10],
                         edgeLabel: {
                             normal: {
                                 textStyle: {
-                                    fontSize: 20
+                                    fontSize: 10
                                 }
                             }
                         },
                         force: {
-                            repulsion: 2500,
-                            edgeLength: [10, 50]
+                            repulsion: 1500,
+                            edgeLength: [20, 50]
                         },
                         draggable: true,
                         itemStyle: {
@@ -134,7 +134,7 @@
                         lineStyle: {
                             normal: {
                                 width: 2,
-                                color: '#4b565b'
+                                color: '#000000'
 
                             }
                         },
@@ -152,8 +152,8 @@
                                 textStyle: {}
                             }
                         },
-                        data: {{ result.entity }},
-                        links: {{ result.relation }}
+                        data: {{ result.entity|safe }},
+                        links: {{ result.relation|safe }}
                     }
                 ]
             };

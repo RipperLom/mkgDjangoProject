@@ -16,7 +16,8 @@ class Neo4j():
     print(type(ss[0]['n']['cost']))    <class 'str'>
     '''
     def matchByName(self,value):
-        sql = "MATCH (n1 { name: '" + str(value) + "' })-[r]-(n2) return n1,labels(n1),r,n2,labels(n2);"
+        sql = "MATCH (n1 { name: '" + str(value) + "' })-[r]-(n2) return n1,labels(n1),r,n2,labels(n2) LIMIT 50"
+        print('cql: ', sql)
         answer = self.graph.run(sql).data()
         return answer
 
@@ -24,29 +25,29 @@ class Neo4j():
     def findRelationByEntity(self,entity1, entity2):
         # MATCH p = shortestpath((a{name:'嗜睡'}) - [*1..] - (b{name:'脑脓肿'})) RETURN p
         # sql = "match p= shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) return p;"
-        sql = "MATCH p=shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) RETURN r"
-        answer = self.graph.run(sql).evaluate()
-
+        sql = "MATCH p=shortestpath((n{name:'"+entity1+"'})-[r*1..]-(m{name:'"+entity2+"'})) RETURN r LIMIT 50"
+        answer = self.graph.run(sql).data()
+        print(answer[0].get('r'))
         relationDict = []
         if (answer is not None):
-            for x in answer:
+            for x in answer[0]['r']:
                 tmp = {}
-                start_node = x.start_node()
-                end_node = x.end_node()
+                start_node = x.start_node
+                end_node = x.end_node
                 tmp['n1'] = start_node
                 tmp['n2'] = end_node
-                tmp['rel'] = str(x).replace(':', " ").split(" ")[1]
+                tmp['rel'] = list(set(x.types()))[0]
                 relationDict.append(tmp)
         return relationDict
 
     #查找指定的两个实体和关系
-    def findRelationByEntityAndRelation(self,entity1, entity2,relation):
-        sql = "match (n1{name:'" + entity1 + "'})-[r:" + relation + "]-(n2{name:'" + entity2 + "'}) return n1,labels(n1),r,n2,labels(n2)"
+    def findRelationByEntitiesAndRelation(self,entity1, entity2,relation):
+        sql = "match (n1{name:'" + entity1 + "'})-[r:" + relation + "]-(n2{name:'" + entity2 + "'}) return n1,labels(n1),r,n2,labels(n2) LIMIT 50"
         answer = self.graph.run(sql).data()
         return answer
     #查找指定的一个实体和关系
     def findRelationByEntityAndRelation(self,entity,relation):
-        sql = "match (n1{name:'" + entity + "'})-[r:"+relation+"]-(n2) return n1,labels(n1),r,n2,labels(n2)"
+        sql = "match (n1{name:'" + entity + "'})-[r:"+relation+"]-(n2) return n1,labels(n1),r,n2,labels(n2) LIMIT 50"
         answer = self.graph.run(sql).data()
         return answer
     #添加节点到graph中
@@ -89,7 +90,7 @@ class Neo4j():
                 onemesg = msg[i].strip().split(',')
                 sql ='MATCH (n:'+entity1label+'{name:"'+onemesg[0]+'"}),(m:'+entity2label+'{name:"'+onemesg[2].strip().replace('\\','').replace('"','')+'"}) CREATE (n)-[r:'+relationname+'{type:"'+onemesg[1]+'"}]->(m) RETURN r'
                 self.graph.run(sql)
-                print(relationname + '导入完成比例：{:.2f}%'.format((i / len(msg)) * 100))
+                print(relationname + '导入完成比例：{:.2f}%'.format(((i+1) / len(msg)) * 100))
             # MATCH(entity1: Disease
             # {name: line.illness_name}), (entity2:Symptom{name:line.symptom_name})
             # CREATE(entity1) - [r: HAS_SYMPTOM
@@ -108,6 +109,6 @@ if __name__ == '__main__':
     # model.createNode('illness_name.csv','Disease')
     # print(model.findRelationByEntityAndRelation('现代病','心理咨询','BELONG_TO'))
     # model.createRelation('illness_another_names.csv', 'Disease', 'Disease', 'Alias')
-    for i in model.matchByName('脑脓肿'):
-        print(i)
+    # for i in model.matchByName('脑脓肿'):
+    #     print(i)
 
